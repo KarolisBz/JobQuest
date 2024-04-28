@@ -1,0 +1,7 @@
+{
+  "name": "JobQuest",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
