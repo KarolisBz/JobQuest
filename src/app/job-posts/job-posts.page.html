@@ -15,6 +15,19 @@
     </ion-toolbar>
   </ion-header>
 
-  <h1>hello</h1>
+  <div id="container">
+    <ion-infinite-scroll>
+      <ion-card *ngFor="let job of jobData">
+        <!--individual card code-->
+        <ion-card-header>
+          <ion-card-title>{{job.name}}</ion-card-title>
+          <ion-card-subtitle>Publication Date: {{job.publication_date}}</ion-card-subtitle>
+          <ion-card-subtitle>Location: {{job.locations[0].name}}</ion-card-subtitle>
+          <ion-card-subtitle>Type: {{job.type}}</ion-card-subtitle>
+        </ion-card-header>
+
+      </ion-card>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>
 

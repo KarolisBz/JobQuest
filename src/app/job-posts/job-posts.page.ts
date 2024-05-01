@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
+import { JobHandlerService } from '../Services/job-handler.service';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,15 +10,28 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './job-posts.page.html',
   styleUrls: ['./job-posts.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
+  imports: [IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll]
 })
 export class JobPostsPage implements OnInit {
-
+  // class variables
   public jobPosts!: string;
-  constructor(private activatedRoute: ActivatedRoute) {}
+  jobData:any = [];
+
+  // constructor
+  constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService) {}
 
   ngOnInit() {
+    // class varaibles
     this.jobPosts = this.activatedRoute.snapshot.paramMap.get('id') as string;
-  }
 
+    // on page initilization, subscribe to api data
+    this.jobService.GetJobData().subscribe(
+      (data)=>{
+        console.log(data);
+        
+        this.jobData = data.results;
+      }
+    );
+
+  }
 }
