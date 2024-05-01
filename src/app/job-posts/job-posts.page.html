@@ -18,7 +18,7 @@
   <div id="container">
     <ion-card *ngFor="let job of jobData">
       <!--individual card code-->
-      <ion-card-header>
+      <ion-card-header [routerLink]="['/job-info/hello']">
         <ion-card-title>{{job.name}}</ion-card-title>
         <ion-card-subtitle>Publication Date: {{job.publication_date}}</ion-card-subtitle>
         <ion-card-subtitle>Location: {{job.locations[0].name}}</ion-card-subtitle>
