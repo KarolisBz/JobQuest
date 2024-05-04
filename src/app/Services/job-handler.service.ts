@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http'; // http import
 import { Observable } from 'rxjs'; // rxjs
 
@@ -8,7 +7,7 @@ import { Observable } from 'rxjs'; // rxjs
 })
 export class JobHandlerService {
   // class Vars
-  apiUrl:string = "https://www.themuse.com/api/public/jobs?location=Galway%2C%20Ireland&page=20&descending=true";
+  apiUrl:string = "https://jsonblob.com/api/jsonBlob/1236327344645201920";
 
   // constructor + creating httpClient instance
   constructor(private httpClient:HttpClient) { }
