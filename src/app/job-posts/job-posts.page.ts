@@ -35,6 +35,12 @@ export class JobPostsPage implements OnInit {
 
          // setting number of results
          this.badgeHandlerService.setJobNum(data.results.length);
+
+         // adding commas to wage strings
+         this.jobData.forEach((job: { [x: string]: any; }) => {
+          job['stringMinWage'] = this.addCommasToNumber(job['minimumSalary']);
+          job['stringMaxWage'] = this.addCommasToNumber(job['maximumSalary']);
+         });
       }
     );
   }
@@ -48,5 +54,21 @@ export class JobPostsPage implements OnInit {
 
     // routing to specified page
     this.router.navigate(['/job-info/' + jobObj.jobTitle], params);
+  }
+
+  // adds commas to a number and returns as string
+  private addCommasToNumber(val: number): string {
+   if (val != null) {
+    let tag = "";
+
+    // adding per hr tag if below 80 euro as wage
+    // api does not give us payment type, so for this project we will assume
+    // the cut of rate to be as below
+    if (val < 1000 && val > 80) tag = "/day";
+    else if (val < 80) tag = "/hr";
+
+    return val.toLocaleString() + tag;
+   }
+   return "not disclosed";
   }
 }
