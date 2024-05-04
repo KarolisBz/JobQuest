@@ -24,7 +24,8 @@ export class JobInfoPage implements OnInit {
 
       // decoding string for normal html output
       const parser = new DOMParser();
-      this.jobObj.jobDescription  = parser.parseFromString(this.jobObj.jobDescription, 'text/html').body.textContent;
+      const parsedText = parser.parseFromString(this.jobObj['jobDescription'] , 'text/html').body.textContent;
+      console.log(parsedText)
     });
   }
 

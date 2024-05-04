@@ -6,6 +6,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton,
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
+import { BadgeHandlerService } from '../Services/badge-handler.service';
 
 @Component({
   selector: 'app-job-posts',
@@ -20,11 +21,10 @@ export class JobPostsPage implements OnInit {
   jobData:any = [];
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService, private router:Router) {}
-  
+  constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService, private router:Router, private badgeHandlerService:BadgeHandlerService) {}
 
   ngOnInit() {
-    // class varaibles
+    // fetching ID
     this.jobPosts = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
     // on page initilization, subscribe to api data
@@ -32,6 +32,9 @@ export class JobPostsPage implements OnInit {
       (data)=>{
         console.log(data);
         this.jobData = data.results;
+
+         // setting number of results
+         this.badgeHandlerService.setJobNum(data.results.length);
       }
     );
   }
