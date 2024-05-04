@@ -26,7 +26,7 @@ export class AppComponent {
   constructor(private badgeHandlerService:BadgeHandlerService) {
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
 
-    // runs first, setup for BadgeHandlerService refernce
+    // runs first, setup for BadgeHandlerService referance
     this.badgeHandlerService.appComponent = this;
   }
 
@@ -49,7 +49,7 @@ export class AppComponent {
     if (favNum <= 0) favNum = null;
     if (archivedNum <= 0) archivedNum = null;
     if (accNotficationNum <= 0) accNotficationNum = null;
-    console.log(jobNum)
+
     // setting values that are databinded
     this.badgeDictionary["Job Posts"] = jobNum;
     this.badgeDictionary["Pending Requests"] = pendingNum;

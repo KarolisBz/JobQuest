@@ -1,10 +1,11 @@
 <ion-header [translucent]="true">
+   <!--title + menu + search bar -->
   <ion-toolbar>
-    <ion-title>Job Posts</ion-title>
+    <ion-title slot="end">Job Posts</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ jobPosts }}</ion-title>
+    <ion-input label="Search: "></ion-input>
   </ion-toolbar>
 </ion-header>
 
