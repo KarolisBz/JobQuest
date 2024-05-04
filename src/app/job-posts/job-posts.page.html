@@ -18,11 +18,12 @@
   <div id="container">
     <ion-card *ngFor="let job of jobData">
       <!--individual card code-->
-      <ion-card-header [routerLink]="['/job-info/hello']">
+      <ion-card-header>
         <ion-card-title>{{job.jobTitle}}</ion-card-title>
         <ion-card-subtitle>Expiration Date: {{job.expirationDate}}</ion-card-subtitle>
         <ion-card-subtitle>Location Eircode: {{job.locationName}}</ion-card-subtitle>
         <ion-card-subtitle>Salary: {{job.maximumSalary}}</ion-card-subtitle>
+        <ion-button (click)="toJobInfo(job)">To Job</ion-button>
       </ion-card-header>
     </ion-card>
   </div>

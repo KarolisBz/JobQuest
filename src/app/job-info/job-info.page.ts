@@ -14,11 +14,19 @@ import { Router } from '@angular/router';
 export class JobInfoPage implements OnInit {
   // class vars
   public jobInfo!: string;
+  jobObj:any;
   private activatedRoute = inject(ActivatedRoute);
-  constructor(private router:Router) {}
+
+  constructor(private router:Router) {
+    // fetching passed data
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.jobObj = params;
+    });
+  }
 
   ngOnInit() {
     this.jobInfo = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    console.log(this.jobObj);
   }
 
 }

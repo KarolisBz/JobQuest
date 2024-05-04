@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JobHandlerService } from '../Services/job-handler.service';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent } from '@ionic/angular/standalone';
-import { ActivatedRoute } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton } from '@ionic/angular/standalone';
+import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -12,16 +12,16 @@ import { Router } from '@angular/router';
   templateUrl: './job-posts.page.html',
   styleUrls: ['./job-posts.page.scss'],
   standalone: true,
-  imports: [IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, RouterLinkWithHref]
+  imports: [IonButton, IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, RouterLinkWithHref]
 })
 export class JobPostsPage implements OnInit {
   // class variables
   public jobPosts!: string;
   jobData:any = [];
-  date:Number = 0;
 
   // constructor
   constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService, private router:Router) {}
+  
 
   ngOnInit() {
     // class varaibles
@@ -36,7 +36,14 @@ export class JobPostsPage implements OnInit {
     );
   }
 
-  toJobInfo(){
-    this.router.navigate(['/folder/hello']);
+  toJobInfo(jobObj: any) {
+    // creating object wrapper to send to next page
+    // this method creates a very long url, but on mobile phones we can't see the url anyways
+    const params: NavigationExtras = {
+      queryParams: jobObj,
+    }
+
+    // routing to specified page
+    this.router.navigate(['/job-info/' + jobObj.jobTitle], params);
   }
 }
