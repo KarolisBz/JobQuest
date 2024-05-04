@@ -21,6 +21,10 @@ export class JobInfoPage implements OnInit {
     // fetching passed data
     this.activatedRoute.queryParams.subscribe(params => {
       this.jobObj = params;
+
+      // decoding string for normal html output
+      const parser = new DOMParser();
+      this.jobObj.jobDescription  = parser.parseFromString(this.jobObj.jobDescription, 'text/html').body.textContent;
     });
   }
 
