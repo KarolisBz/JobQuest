@@ -30,11 +30,18 @@ export class JobPostsPage implements OnInit {
     // on page initilization, subscribe to api data
     this.jobService.GetJobData().subscribe(
       (data)=>{
-        console.log(data);
+        // remove 1 - 60 random objects from our fixed 100 objects to simulate the non-static behaviour of API returns
+        // this is for project display only, real app would call a API not from json blog
+        let removeNumber = Math.floor((Math.random() * 60));
+        for (let i: number = 0; i < removeNumber; i++) {
+          data.results.splice(i, 1);
+        }
+
+        // setting page data to remaining results
         this.jobData = data.results;
 
          // setting number of results
-         this.badgeHandlerService.setJobNum(data.results.length);
+         this.badgeHandlerService.setJobNum(this.jobData.length);
 
          // adding commas to wage strings
          this.jobData.forEach((job: { [x: string]: any; }) => {
