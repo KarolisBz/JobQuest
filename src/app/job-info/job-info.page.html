@@ -11,5 +11,20 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <strong class="capitalize">{{ jobObj.jobTitle }}</strong>
+  <strong class="capitalize center">Employer Name:</strong> {{ jobObj.jobTitle }}
+  <br>
+  <strong class="capitalize center">Employer Id:</strong> {{ jobObj.employerId }}
+  <br>
+  <strong class="capitalize center">Location (Eircode):</strong> {{ jobObj.locationName }}
+  <br>
+  <strong class="capitalize center">Salary Range:</strong> {{ jobObj.minimumSalary }} - {{ jobObj.maximumSalary }} {{ jobObj.currency }} 
+  <br>
+  <strong class="capitalize center">End Date:</strong> {{ jobObj.expirationDate }}
+  <br>
+  <strong class="capitalize center">Applicants:</strong> {{ jobObj.applications }}
+  <br>
+  <strong class="capitalize center">Job Description:</strong>
+  <p>
+    {{ jobObj.jobDescription }}
+  </p>
 </ion-content>
