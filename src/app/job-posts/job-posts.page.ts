@@ -54,10 +54,6 @@ export class JobPostsPage implements OnInit {
          });
       }
     );
-
-    // testing quick sort
-    let sortedArray = this.sortingAlgorithms.quickSort([9,2,6,1,2,1,1,1]);
-    console.log(sortedArray);
   }
 
   toJobInfo(jobObj: any) {
@@ -87,12 +83,52 @@ export class JobPostsPage implements OnInit {
    return "not disclosed";
   }
 
-  // sorts all jobs that are closest to search bar input in desc order
+  // sorts all jobs that are closest to search bar input in desc order in respect to their title
+  // this search is not case sensitive
   public searchJob()
   {
-    let tempData:any = [];
+    let likeness:any = [];
+    let termWords = this.searchBarEntery.toLowerCase().split(" ");
 
-    // using a slow bubble sort
+    // giving each string a likeableness value based on their first letters of similarity
+    this.constJobData.forEach((job: any) => {
+      // word vars
+      let totalScore: number = 0;
+      let jobTitle = job.jobTitle.toLowerCase();
 
+      // fetching every word in said title
+      let words:any = jobTitle.split(" ");
+
+      // getting value for each word, and adding it up
+      words.forEach((titleContent: string) => {
+        termWords.forEach((searchContent: string) => {
+          // if both strings are exactly the same, give a large amount of points and don't check each letter
+          if (titleContent == searchContent) {
+            totalScore += 10;
+          }
+          else {
+            // letter arrays
+            let wordLetters = titleContent.split("");
+            let searchLetters = searchContent.split("");
+
+            for (let i: number = 0; i < searchContent.length; i++) {
+              if (searchLetters[i] == wordLetters[i]) {
+                totalScore++;
+              }
+              else
+                break;
+            }
+          }
+        });
+      });
+
+      likeness.push({totalScore, job});
+    });
+
+    // building array in order using quicksort
+    this.jobData = []; // clearing array
+    this.sortingAlgorithms.quickSort(likeness).forEach((sortedObj: any) => {
+      this.jobData.push(sortedObj['job']);
+    });
   }
 }
