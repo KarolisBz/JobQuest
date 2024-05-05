@@ -34,7 +34,8 @@ export class AppComponent {
   isLoggedIn:boolean = false;
 
   // we use this function to hide the menu on route
-  // fetching instance
+  // fetching instance, credit to https://forum.ionicframework.com/t/how-do-i-get-html-element-values/94925/5 for post
+  // getting this to work took way too long...
   @ViewChild('menuTag') menu!: IonMenu;
 
   toAccountPage():void {

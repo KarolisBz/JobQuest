@@ -34,9 +34,9 @@ export class JobPostsPage implements OnInit {
     // on page initilization, subscribe to api data
     this.jobService.GetJobData().subscribe(
       (data) => {
-        // remove 1 - 60 random objects from our fixed 100 objects to simulate the non-static behaviour of API returns
+        // remove 1 - 40 random objects from our fixed 100 objects to simulate the non-static behaviour of API returns
         // this is for project display only, real app would call a API not from json blog
-        let removeNumber = Math.floor((Math.random() * 60));
+        let removeNumber = Math.floor((Math.random() * 40));
         for (let i: number = 0; i < removeNumber; i++) {
           data.results.splice(i, 1);
         }
@@ -97,6 +97,9 @@ export class JobPostsPage implements OnInit {
     // if search is empty, return default search results
     if (this.searchBarEntery == "" || this.searchBarEntery == " ") {
       this.jobData = this.constJobData;
+
+      // setting number of results
+      this.badgeHandlerService.setJobNum(this.jobData.length);
       return;
     }
 
@@ -138,10 +141,15 @@ export class JobPostsPage implements OnInit {
       likeness.push({totalScore, job});
     });
 
-    // building array in order using quicksort
+    // building array in order using quicksort, not adding anything with a similarity value of 0
     this.jobData = []; // clearing array
     this.sortingAlgorithms.quickSort(likeness).forEach((sortedObj: any) => {
-      this.jobData.push(sortedObj['job']);
+      if (sortedObj['totalScore'] > 0) {
+        this.jobData.push(sortedObj['job']);
+      }
     });
+
+   // setting number of results
+   this.badgeHandlerService.setJobNum(this.jobData.length);
   }
 }
