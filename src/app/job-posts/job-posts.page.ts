@@ -7,6 +7,7 @@ import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
+import { SortingAlgorithmsService } from '../Services/sorting-algorithms.service';
 
 @Component({
   selector: 'app-job-posts',
@@ -19,9 +20,11 @@ export class JobPostsPage implements OnInit {
   // class variables
   public jobPosts!: string;
   jobData:any = [];
+  constJobData:any = [];
+  searchBarEntery:string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService, private router:Router, private badgeHandlerService:BadgeHandlerService) {}
+  constructor(private activatedRoute: ActivatedRoute, private jobService:JobHandlerService, private router:Router, private badgeHandlerService:BadgeHandlerService, private sortingAlgorithms:SortingAlgorithmsService) {}
 
   ngOnInit() {
     // fetching ID
@@ -39,6 +42,7 @@ export class JobPostsPage implements OnInit {
 
         // setting page data to remaining results
         this.jobData = data.results;
+        this.constJobData = data.results; // is not effected by sorting
 
          // setting number of results
          this.badgeHandlerService.setJobNum(this.jobData.length);
@@ -50,6 +54,10 @@ export class JobPostsPage implements OnInit {
          });
       }
     );
+
+    // testing quick sort
+    let sortedArray = this.sortingAlgorithms.quickSort([9,2,6,1,2,1,1,1]);
+    console.log(sortedArray);
   }
 
   toJobInfo(jobObj: any) {
@@ -77,5 +85,14 @@ export class JobPostsPage implements OnInit {
     return val.toLocaleString() + tag;
    }
    return "not disclosed";
+  }
+
+  // sorts all jobs that are closest to search bar input in desc order
+  public searchJob()
+  {
+    let tempData:any = [];
+
+    // using a slow bubble sort
+
   }
 }

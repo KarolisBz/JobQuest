@@ -5,7 +5,8 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-input label="Search: "></ion-input>
+    <!-- EXAMPLE of 2 way databinding and onblur event -->
+    <ion-input label="Search: " [(ngModel)]="searchBarEntery" (keyup.enter)="searchJob()"></ion-input>
   </ion-toolbar>
 </ion-header>
 
