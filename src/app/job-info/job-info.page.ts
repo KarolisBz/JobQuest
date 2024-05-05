@@ -1,15 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonBackButton, IonButton } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonBackButton, IonButton, IonCard, IonLabel, IonItem, IonList, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/angular/standalone';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { subwayOutline, add, subwaySharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-job-info',
   templateUrl: './job-info.page.html',
   styleUrls: ['./job-info.page.scss'],
   standalone: true,
-  imports: [IonButton, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, RouterLinkWithHref]
+  imports: [IonIcon, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonList, IonItem, IonLabel, IonCard, IonButton, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, RouterLinkWithHref]
 })
 export class JobInfoPage implements OnInit {
   // class vars
@@ -18,6 +20,9 @@ export class JobInfoPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
 
   constructor(private router:Router) {
+    // adding icons
+    addIcons({subwayOutline, add, subwaySharp});
+
     // fetching passed data
     this.activatedRoute.queryParams.subscribe(params => {
       this.jobObj = params;

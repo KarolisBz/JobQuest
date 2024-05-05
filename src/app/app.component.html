@@ -14,7 +14,7 @@
           <ion-note *ngIf="!isLoggedIn" style="color: lightblue; text-decoration-line: underline;" (click)="toAccountPage()">Log In</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+            <ion-item [disabled]="!isLoggedIn" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
               <ion-badge slot="end">{{badgeDictionary[p.title]}}</ion-badge>

@@ -11,25 +11,63 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h1 style="margin: 0;">{{ jobObj.jobTitle }}</h1>
-  Job Website <a target="_blank" rel="noopener noreferrer" style="margin-top: 0;" href={{jobObj.jobUrl}}>{{ jobObj.employerName }}</a>
-  <br><br>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ jobObj.jobTitle }}</ion-card-title>
+      <ion-card-subtitle>
+        Job Website <a target="_blank" rel="noopener noreferrer" style="margin-top: 0;" href={{jobObj.jobUrl}}>{{
+          jobObj.employerName }}</a>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <strong class="capitalize center">Employer Name:&nbsp;</strong> {{ jobObj.employerName }}
+        </ion-item>
 
-  <strong class="capitalize center">Employer Name:</strong> {{ jobObj.employerName }}
-  <br>
-  <strong class="capitalize center">Employer Id:</strong> {{ jobObj.employerId }}
-  <br>
-  <strong class="capitalize center">Location (Eircode):</strong> {{ jobObj.locationName }}
-  <br>
-  <strong class="capitalize center">Salary Range:</strong> {{ jobObj.stringMinWage }} - {{ jobObj.stringMaxWage }} {{ jobObj.currency }} 
-  <br>
-  <strong class="capitalize center">End Date:</strong> {{ jobObj.expirationDate }}
-  <br>
-  <strong class="capitalize center">Applicants:</strong> {{ jobObj.applications }}
-  <br><br>
-  <strong class="capitalize center" style="margin-bottom: 0;">Job Description:</strong>
-  <p id="container" style="overflow: visible" style="margin-top: 0;">{{ jobObj.jobDescription }}</p>
+        <ion-item>
+          <strong class="capitalize center">Employer Id:&nbsp;</strong> {{ jobObj.employerId }}
+        </ion-item>
 
-  <strong class="capitalize center">Apply Bellow:</strong> <br>
-  
+        <ion-item>
+          <strong class="capitalize center">Location (Eircode):&nbsp;</strong> {{ jobObj.locationName }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Salary Range:&nbsp;</strong> {{ jobObj.stringMinWage }} - {{ jobObj.stringMaxWage}} {{ jobObj.currency }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">End Date:&nbsp;</strong> {{ jobObj.expirationDate }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Applicants:&nbsp;</strong> {{ jobObj.applications }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">End Date:&nbsp;</strong> {{ jobObj.expirationDate }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center" style="margin-bottom: 0;">Job Description:</strong><br>
+        </ion-item>
+
+        <ion-item>
+          <p id="container" style="overflow: visible" style="margin-top: 0;">{{ jobObj.jobDescription }}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-button size="small" color="dark" slot="end">+</ion-button>
+          <ion-icon name="subwaySharp"></ion-icon>
+          <ion-icon name="md-add"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-button class="ion-textCenter">Apply</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

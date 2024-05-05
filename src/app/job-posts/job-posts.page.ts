@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // used for 2 way databinding
 import { JobHandlerService } from '../Services/job-handler.service';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton, IonInput, IonLabel, IonSearchbar, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton, IonInput, IonLabel, IonSearchbar, IonIcon, IonFabButton, IonFabList, IonFab } from '@ionic/angular/standalone';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { SortingAlgorithmsService } from '../Services/sorting-algorithms.service
   templateUrl: './job-posts.page.html',
   styleUrls: ['./job-posts.page.scss'],
   standalone: true,
-  imports: [IonSearchbar, IonLabel, IonInput, IonButton, IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, RouterLinkWithHref, IonIcon]
+  imports: [IonFab, IonFabList, IonFabButton, IonSearchbar, IonLabel, IonInput, IonButton, IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, RouterLinkWithHref, IonIcon]
 })
 export class JobPostsPage implements OnInit {
   // class variables
