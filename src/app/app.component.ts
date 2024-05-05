@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge, IonChip, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -35,14 +35,14 @@ export class AppComponent {
 
   // we use this function to hide the menu on route
   // fetching instance
-  @ViewChild('menuTag') menu!: ElementRef;
+  @ViewChild('menuTag') menu!: IonMenu;
 
   toAccountPage():void {
     // routing to specified page
     this.router.navigate(['folder/Account']);
     
     // closing side menu
-    console.log(this.menu)
+    this.menu.close();
   }
 
   // badge numbers (with their respective page titles)
