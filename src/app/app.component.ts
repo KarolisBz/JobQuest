@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge, IonChip, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -24,6 +24,7 @@ export class AppComponent {
   public labels = ['In-person', 'Remote', 'Student', 'Part Time', 'Full Time'];
 
   constructor(private badgeHandlerService:BadgeHandlerService, private router:Router) {
+    // adding ion-icons
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
 
     // runs first, setup for BadgeHandlerService referance

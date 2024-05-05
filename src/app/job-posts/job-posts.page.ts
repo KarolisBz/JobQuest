@@ -8,6 +8,8 @@ import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { SortingAlgorithmsService } from '../Services/sorting-algorithms.service';
+import { addIcons } from 'ionicons';
+import { returnUpBack } from 'ionicons/icons';
 
 
 @Component({
@@ -25,7 +27,10 @@ export class JobPostsPage implements OnInit {
   searchBarEntery:string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private router: Router, private badgeHandlerService: BadgeHandlerService, private sortingAlgorithms: SortingAlgorithmsService) {}
+  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private router: Router, private badgeHandlerService: BadgeHandlerService, private sortingAlgorithms: SortingAlgorithmsService) {
+    // adding icons
+    addIcons({returnUpBack});
+  }
 
   ngOnInit() {
     // fetching ID

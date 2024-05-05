@@ -8,7 +8,7 @@
     <!-- EXAMPLE of 2 way databinding and ionInput event -->
     <!-- Had to use ionCancel workaround because ionClear cannot clear 2 way databinding-->
     <ion-searchbar show-cancel-button="focus" showClearButton="never" clearIcon="" [(ngModel)]="searchBarEntery"
-      [debounce]="500" (ionCancel)="clearInput()" (ionInput)="searchJob()"></ion-searchbar>
+      [debounce]="500" (ionCancel)="clearInput()" (ionInput)="searchJob()" cancelButtonIcon="return-up-back"></ion-searchbar>
   </ion-toolbar>
 
 </ion-header>

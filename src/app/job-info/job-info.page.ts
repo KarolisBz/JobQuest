@@ -4,7 +4,7 @@ import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent,
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { subwayOutline, add, subwaySharp } from 'ionicons/icons';
+import { heart, archive } from 'ionicons/icons';
 
 @Component({
   selector: 'app-job-info',
@@ -21,7 +21,7 @@ export class JobInfoPage implements OnInit {
 
   constructor(private router:Router) {
     // adding icons
-    addIcons({subwayOutline, add, subwaySharp});
+    addIcons({heart, archive});
 
     // fetching passed data
     this.activatedRoute.queryParams.subscribe(params => {
