@@ -84,7 +84,7 @@ export class JobPostsPage implements OnInit {
   }
 
   // sorts all jobs that are closest to search bar input in desc order in respect to their title
-  // this search is not case sensitive
+  // this mini search engine is not case sensitive
   public searchJob()
   {
     let likeness:any = [];

@@ -18,7 +18,6 @@ export class SortingAlgorithmsService {
 
     // finding pivit point from median of 3
     const pivot = this.getPivot(objectArray);
-    console.log(pivot);
     let left = []; // larger
     let right = []; // smaller
     let equals = []; // to keep duplicates too
