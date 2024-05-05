@@ -11,6 +11,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <h1 style="margin: 0;">{{ jobObj.jobTitle }}</h1>
+  Job Website <a target="_blank" rel="noopener noreferrer" style="margin-top: 0;" href={{jobObj.jobUrl}}>{{ jobObj.employerName }}</a>
+  <br><br>
+
   <strong class="capitalize center">Employer Name:</strong> {{ jobObj.employerName }}
   <br>
   <strong class="capitalize center">Employer Id:</strong> {{ jobObj.employerId }}
@@ -23,9 +27,9 @@
   <br>
   <strong class="capitalize center">Applicants:</strong> {{ jobObj.applications }}
   <br><br>
-  <strong class="capitalize center">Job Description:</strong>
-  <p id="container" style="overflow: visible">{{ jobObj.jobDescription }}</p>
+  <strong class="capitalize center" style="margin-bottom: 0;">Job Description:</strong>
+  <p id="container" style="overflow: visible" style="margin-top: 0;">{{ jobObj.jobDescription }}</p>
 
   <strong class="capitalize center">Apply Bellow:</strong> <br>
-  Job Website <a target="_blank" rel="noopener noreferrer" href={{jobObj.jobUrl}}>{{ jobObj.employerName }}</a>
+  
 </ion-content>

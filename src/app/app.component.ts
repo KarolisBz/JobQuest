@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge } from '@ionic/angular/standalone';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge, IonChip, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline, menu  } from 'ionicons/icons';
 import { BadgeHandlerService } from './Services/badge-handler.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { BadgeHandlerService } from './Services/badge-handler.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonBadge, RouterLink, RouterLinkActive, CommonModule, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
+  imports: [IonAvatar, IonChip, IonBadge, RouterLink, RouterLinkActive, CommonModule, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
 })
 export class AppComponent {
   public appPages = [
@@ -23,11 +23,26 @@ export class AppComponent {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  constructor(private badgeHandlerService:BadgeHandlerService) {
+  constructor(private badgeHandlerService:BadgeHandlerService, private router:Router) {
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
 
     // runs first, setup for BadgeHandlerService referance
     this.badgeHandlerService.appComponent = this;
+  }
+
+  // logged in
+  isLoggedIn:boolean = false;
+
+  // we use this function to hide the menu on route
+  // fetching instance
+  @ViewChild('menuTag') menu!: ElementRef;
+
+  toAccountPage():void {
+    // routing to specified page
+    this.router.navigate(['folder/Account']);
+    
+    // closing side menu
+    console.log(this.menu)
   }
 
   // badge numbers (with their respective page titles)
