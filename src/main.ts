@@ -4,6 +4,7 @@ import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { HttpClientModule } from '@angular/common/http'; // needed for api parasing
 import { importProvidersFrom } from '@angular/core'; // changes modules to stand alone
+import { IonicStorageModule } from '@ionic/storage-angular'; // needed to have data presistence
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -18,6 +19,6 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes),
-    importProvidersFrom(HttpClientModule),
+    importProvidersFrom(HttpClientModule, IonicStorageModule.forRoot()), // also import data presistence here
   ],
 });

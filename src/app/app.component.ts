@@ -16,10 +16,10 @@ import { BadgeHandlerService } from './Services/badge-handler.service';
 export class AppComponent {
   public appPages = [
     { title: 'Job Posts', url: '/job-posts', icon: 'mail' },
-    { title: 'Pending Requests', url: '/folder/Pending Requests', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Account', url: '/folder/Account', icon: 'person'},
+    { title: 'Pending Requests', url: '/pending-requests', icon: 'paper-plane' },
+    { title: 'Favorites', url: '/favorites', icon: 'heart' },
+    { title: 'Archived', url: '/archived', icon: 'archive' },
+    { title: 'Account', url: '/account', icon: 'person'},
   ];
   public labels = ['In-person', 'Remote', 'Student', 'Part Time', 'Full Time'];
 
