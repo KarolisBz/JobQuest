@@ -38,15 +38,15 @@
         </ion-item>
 
         <ion-item>
+          <strong class="capitalize center">Start Date:&nbsp;</strong> {{ jobObj.date }}
+        </ion-item>
+
+        <ion-item>
           <strong class="capitalize center">End Date:&nbsp;</strong> {{ jobObj.expirationDate }}
         </ion-item>
 
         <ion-item>
           <strong class="capitalize center">Applicants:&nbsp;</strong> {{ jobObj.applications }}
-        </ion-item>
-
-        <ion-item>
-          <strong class="capitalize center">End Date:&nbsp;</strong> {{ jobObj.expirationDate }}
         </ion-item>
 
         <ion-item>
@@ -59,16 +59,16 @@
 
         <ion-item>
           <ion-button slot="end">
-            <ion-icon name="archive" color="dark" aria-label="Archive"></ion-icon>
+            <ion-icon name="archive" color="dark" aria-label="Archive" (click)="archiveJob()"></ion-icon>
           </ion-button>
 
           <ion-button slot="end">
-            <ion-icon name="heart" style="color: red;" aria-label="Favorite"></ion-icon>
+            <ion-icon name="heart" style="color: red;" aria-label="Favorite" (click)="favouriteJob()"></ion-icon>
           </ion-button>
         </ion-item>
 
         <ion-item>
-          <ion-button class="ion-textCenter">Apply</ion-button>
+          <ion-button class="ion-textCenter" (click)="applyToJob()">Apply</ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>

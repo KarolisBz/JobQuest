@@ -50,4 +50,25 @@ export class BadgeHandlerService {
     this.accNotficationNum = newVal;
     this.updateBadges();
   }
+
+  // getters
+  getJobNum(): number {
+    return this.jobNum;
+  }
+
+  getPendingNum(): number {
+    return this.pendingNum;
+  }
+
+  getFavNum(): number {
+    return this.favNum;
+  }
+
+  getArchivedNum(): number {
+    return this.archivedNum;
+  }
+
+  getAccNotficationNum(): number {
+    return this.accNotficationNum;
+  }
 }

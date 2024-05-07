@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCard, IonMenuButton, IonSearchbar } from '@ionic/angular/standalone';
-import { ActivatedRoute, NavigationExtras } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { DataHandlerService } from '../Services/data-handler.service';
 import { addIcons } from 'ionicons';
@@ -25,7 +24,7 @@ export class PendingRequestsPage implements OnInit {
   searchBarEntery: string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private badgeHandlerService: BadgeHandlerService, private dataHandlerService: DataHandlerService, private jobService: JobHandlerService) {
+  constructor(private activatedRoute: ActivatedRoute, private badgeHandlerService: BadgeHandlerService, private dataHandlerService: DataHandlerService, private jobService: JobHandlerService) {
     // adding icons
     addIcons({ returnUpBack });
   }
@@ -35,47 +34,29 @@ export class PendingRequestsPage implements OnInit {
     this.pendingRequests = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
     // on page initilization, fetch inital saved data to start off with
-    this.dataHandlerService.getData(
-      (dataWrapper: { [x: string]: any; }): any => {
-        this.pendingJobData = dataWrapper['pendingJobs'];
-        this.constPendingJobData = dataWrapper['pendingJobs'];
+    let dataWrapper = this.dataHandlerService.getData();
+    this.pendingJobData = dataWrapper['pendingJobs'];
+    this.constPendingJobData = dataWrapper['pendingJobs'];
 
-        // setting number of results
-        this.badgeHandlerService.setPendingNum(this.pendingJobData.length);
+    // setting number of results
+    this.badgeHandlerService.setPendingNum(this.pendingJobData.length);
 
-        // adding commas to wage strings
-        this.pendingJobData.forEach((job: { [x: string]: any; }) => {
-          job['stringMinWage'] = this.addCommasToNumber(job['minimumSalary']);
-          job['stringMaxWage'] = this.addCommasToNumber(job['maximumSalary']);
-        });
-      });
+    // adding commas to wage strings
+    this.pendingJobData.forEach((job: { [x: string]: any; }) => {
+      job['stringMinWage'] = this.jobService.wageToString(job['minimumSalary']);
+      job['stringMaxWage'] = this.jobService.wageToString(job['maximumSalary']);
+    });
+  }
+
+  // code runs when page is accessed, fetching updated info
+  ionViewWillEnter() {
+    // different from onInit as it re-sorts when necessary and doesn't add wage to string
+    this.setPageData(this.dataHandlerService.getData()['pendingJobs']);
   }
 
   toJobInfo(jobObj: any) {
-    // creating object wrapper to send to next page
-    // this method creates a very long url, but on mobile phones we can't see the url anyways
-    const params: NavigationExtras = {
-      queryParams: jobObj,
-    }
-
-    // routing to specified page
-    this.router.navigate(['/job-info/' + jobObj.jobTitle], params);
-  }
-
-  // adds commas to a number and returns as string
-  private addCommasToNumber(val: number): string {
-    if (val != null) {
-      let tag = "";
-
-      // adding per hr tag if below 80 euro as wage
-      // api does not give us payment type, so for this project we will assume
-      // the cut of rate to be as below
-      if (val < 1000 && val > 80) tag = "/day";
-      else if (val < 80) tag = "/hr";
-
-      return val.toLocaleString() + tag;
-    }
-    return "not disclosed";
+    // shared version of function so edits only have to be made on 1 function
+    this.jobService.toJobInfo(jobObj);
   }
 
   // clears the 2 way databinding data
@@ -85,9 +66,27 @@ export class PendingRequestsPage implements OnInit {
   }
 
   // gets similer words to search input and changes result number on badge
-  public searchJob() {
+  searchJob() {
     // fetching similer jobs
     this.pendingJobData = this.jobService.getSimilerJobs(this.searchBarEntery, this.pendingJobData, this.constPendingJobData);
+
+    // setting number of results
+    this.badgeHandlerService.setPendingNum(this.pendingJobData.length);
+  }
+
+  // updates the pages data for visuals
+  setPageData(newData: any) {
+    // if data is sorted, we need to resort it when updating data
+    if (this.constPendingJobData.length != this.pendingJobData.length) {
+      this.constPendingJobData = newData;
+      this.pendingJobData = newData;
+      this.searchJob();
+    }
+    else {
+      // page is currently not sorted, just update the values
+      this.constPendingJobData = newData;
+      this.pendingJobData = newData;
+    }
 
     // setting number of results
     this.badgeHandlerService.setPendingNum(this.pendingJobData.length);

@@ -7,14 +7,20 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class DataHandlerService implements OnInit{
   // service fields
-  dataWrapper:any;
-
+  private dataWrapper: any = {
+    pendingJobs: [],
+    favouriteJobs: [],
+    archivedJobs: [],
+    accountData: [],
+  };
+  
   // constructor
   constructor(private storage:Storage) {};
 
   // creates datastore on initzliation of service
   async ngOnInit() {
     await this.storage.create();
+    this.loadData();
   }
   
   // saves all data
@@ -41,14 +47,14 @@ export class DataHandlerService implements OnInit{
   }
 
   // returns data wrapped to caller function
-  getData(holder:any): any {
-    console.log(holder);
+  getData(): any {
     return this.dataWrapper;
   }
 
   // adds pending job data to be saved
-  addPendingData(pendingJobs: any): void {
-    this.dataWrapper['pendingJobs'].push(pendingJobs);
+  addPendingData(pendingJobData: any): void {
+    this.dataWrapper['pendingJobs'].push(pendingJobData);
+    console.log(this.dataWrapper['pendingJobs'])
   }
 
   // adds favourite job data to be saved

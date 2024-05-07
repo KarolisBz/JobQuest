@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonBackButton, IonButton, IonCard, IonLabel, IonItem, IonList, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonBackButton, IonButton, IonCard, IonLabel, IonItem, IonList, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon } from '@ionic/angular/standalone';
 import { RouterLinkWithHref } from '@angular/router';
-import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { heart, archive } from 'ionicons/icons';
+import { DataHandlerService } from '../Services/data-handler.service';
+import { BadgeHandlerService } from '../Services/badge-handler.service';
 
 @Component({
   selector: 'app-job-info',
@@ -19,7 +20,7 @@ export class JobInfoPage implements OnInit {
   jobObj:any;
   private activatedRoute = inject(ActivatedRoute);
 
-  constructor(private router:Router) {
+  constructor(private dataHandlerService:DataHandlerService, private badgeHandler:BadgeHandlerService) {
     // adding icons
     addIcons({heart, archive});
 
@@ -39,4 +40,20 @@ export class JobInfoPage implements OnInit {
     console.log(this.jobObj);
   }
 
+  // adds job obj to favourites data
+  favouriteJob() {
+
+  }
+
+  // adds job obj to archive-job data
+  archiveJob() {
+
+  }
+
+  // adds job to pending requests
+  applyToJob() {
+    this.dataHandlerService.addPendingData(this.jobObj);
+    // temp increase badge value by 1 until page is loaded and resorted
+    this.badgeHandler.setPendingNum(this.badgeHandler.getPendingNum() + 1)
+  }
 }

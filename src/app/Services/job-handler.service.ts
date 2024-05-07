@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // http import
 import { Observable } from 'rxjs'; // rxjs
 import { SortingAlgorithmsService } from '../Services/sorting-algorithms.service';
+import { NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,8 @@ export class JobHandlerService {
   // class Vars
   apiUrl:string = "https://jsonblob.com/api/jsonBlob/1236327344645201920";
 
-  // constructor + creating httpClient instance + getting sorting algorithms service instance
-  constructor(private httpClient:HttpClient, private sortingAlgorithms: SortingAlgorithmsService) { }
+  // constructor + creating required class instances
+  constructor(private httpClient:HttpClient, private sortingAlgorithms: SortingAlgorithmsService, private router:Router) { }
   
   // returns api data as an Observable
   GetJobData():Observable<any> {
@@ -21,16 +23,14 @@ export class JobHandlerService {
 
   // sorts all jobs that are closest to search bar input in desc order in respect to their title
   // this mini search engine is not case sensitive, and returns the sorted job data
-  public getSimilerJobs(searchBarEntery:String, jobData:any, constJobData:any)
-  {
+  getSimilerJobs(searchBarEntery: String, jobData: any, constJobData: any) {
     // if search is empty, return default search results
     if (searchBarEntery == "" || searchBarEntery == " ") {
-      jobData = constJobData;
-
-      return jobData;
+      return constJobData;
     }
 
-    let likeness:any = [];
+    // local vars
+    let likeness: any = [];
     let termWords = searchBarEntery.toLowerCase().split(" ");
 
     // giving each string a likeableness value based on their first letters of similarity
@@ -40,7 +40,7 @@ export class JobHandlerService {
       let jobTitle = job.jobTitle.toLowerCase();
 
       // fetching every word in said title
-      let words:any = jobTitle.split(" ");
+      let words: any = jobTitle.split(" ");
 
       // getting value for each word, and adding it up
       words.forEach((titleContent: string) => {
@@ -65,7 +65,7 @@ export class JobHandlerService {
         });
       });
 
-      likeness.push({totalScore, job});
+      likeness.push({ totalScore, job });
     });
 
     // building array in order using quicksort, not adding anything with a similarity value of 0
@@ -76,6 +76,34 @@ export class JobHandlerService {
       }
     });
 
-   return jobData;
+    return jobData;
+  }
+
+  // changes wage numbers to a appropriate string
+  wageToString(val: number): string {
+    if (val != null) {
+      let tag = "";
+
+      // adding per hr tag if below 80 euro as wage
+      // api does not give us payment type, so for this project we will assume payment type
+      // the cut of rate to be as below
+      if (val < 1000 && val > 80) tag = "/day";
+      else if (val < 80) tag = "/hr";
+
+      return val.toLocaleString() + tag;
+    }
+    return "not disclosed";
+  }
+
+  // sends user to information page of corresponding job
+  toJobInfo(jobObj: any) {
+    // creating object wrapper to send to next page
+    // this method creates a very long url, but on mobile phones we can't see the url anyways
+    const params: NavigationExtras = {
+      queryParams: jobObj,
+    }
+
+    // routing to specified page
+    this.router.navigate(['/job-info/' + jobObj.jobTitle], params);
   }
 }
