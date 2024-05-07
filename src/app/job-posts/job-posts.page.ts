@@ -7,10 +7,8 @@ import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import { RouterLinkWithHref } from '@angular/router';
 import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
-import { SortingAlgorithmsService } from '../Services/sorting-algorithms.service';
 import { addIcons } from 'ionicons';
 import { returnUpBack } from 'ionicons/icons';
-
 
 @Component({
   selector: 'app-job-posts',
@@ -27,7 +25,7 @@ export class JobPostsPage implements OnInit {
   searchBarEntery:string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private router: Router, private badgeHandlerService: BadgeHandlerService, private sortingAlgorithms: SortingAlgorithmsService) {
+  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private router: Router, private badgeHandlerService: BadgeHandlerService) {
     // adding icons
     addIcons({returnUpBack});
   }
@@ -95,66 +93,13 @@ export class JobPostsPage implements OnInit {
     this.searchJob();
   }
 
-  // sorts all jobs that are closest to search bar input in desc order in respect to their title
-  // this mini search engine is not case sensitive
+  // gets similer words to search input and changes result number on badge
   public searchJob()
   {
-    // if search is empty, return default search results
-    if (this.searchBarEntery == "" || this.searchBarEntery == " ") {
-      this.jobData = this.constJobData;
+    // fetching similer jobs
+    this.jobData = this.jobService.getSimilerJobs(this.searchBarEntery, this.jobData, this.constJobData);
 
-      // setting number of results
-      this.badgeHandlerService.setJobNum(this.jobData.length);
-      return;
-    }
-
-    let likeness:any = [];
-    let termWords = this.searchBarEntery.toLowerCase().split(" ");
-
-    // giving each string a likeableness value based on their first letters of similarity
-    this.constJobData.forEach((job: any) => {
-      // word vars
-      let totalScore: number = 0;
-      let jobTitle = job.jobTitle.toLowerCase();
-
-      // fetching every word in said title
-      let words:any = jobTitle.split(" ");
-
-      // getting value for each word, and adding it up
-      words.forEach((titleContent: string) => {
-        termWords.forEach((searchContent: string) => {
-          // if both strings are exactly the same, give a large amount of points and don't check each letter
-          if (titleContent == searchContent) {
-            totalScore += 10;
-          }
-          else {
-            // letter arrays
-            let wordLetters = titleContent.split("");
-            let searchLetters = searchContent.split("");
-
-            for (let i: number = 0; i < searchContent.length; i++) {
-              if (searchLetters[i] == wordLetters[i]) {
-                totalScore++;
-              }
-              else
-                break;
-            }
-          }
-        });
-      });
-
-      likeness.push({totalScore, job});
-    });
-
-    // building array in order using quicksort, not adding anything with a similarity value of 0
-    this.jobData = []; // clearing array
-    this.sortingAlgorithms.quickSort(likeness).forEach((sortedObj: any) => {
-      if (sortedObj['totalScore'] > 0) {
-        this.jobData.push(sortedObj['job']);
-      }
-    });
-
-   // setting number of results
-   this.badgeHandlerService.setJobNum(this.jobData.length);
+     // setting number of results
+    this.badgeHandlerService.setJobNum(this.jobData.length);
   }
 }

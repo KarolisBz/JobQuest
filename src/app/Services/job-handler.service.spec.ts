@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { JobHandlerService } from './job-handler.service';
 
 describe('JobHandlerService', () => {
