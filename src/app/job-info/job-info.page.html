@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/job-posts']">Back</ion-button>
+      <ion-button [routerLink]="[backUrl]">Back</ion-button>
     </ion-buttons>
     <ion-title>{{ jobObj.jobTitle }}</ion-title>
   </ion-toolbar>
@@ -67,17 +67,17 @@
         </ion-item>
 
         <ion-item>
-          <ion-button slot="end">
-            <ion-icon name="archive" color="dark" aria-label="Archive" (click)="archiveJob()"></ion-icon>
+          <ion-button slot="end" color="dark">
+            <ion-icon name="archive" color="light" aria-label="Archive" (click)="archiveJob()"></ion-icon>
           </ion-button>
 
-          <ion-button slot="end">
+          <ion-button slot="end" color="dark">
             <ion-icon name="heart" style="color: red;" aria-label="Favorite" (click)="favouriteJob()"></ion-icon>
           </ion-button>
         </ion-item>
 
         <ion-item>
-          <ion-button class="ion-textCenter" id="alert" disabled="{{hasApplied}}">{{applyBtnText}}</ion-button>
+          <ion-button class="ion-textCenter" id="alert" disabled="{{hasApplied}}" color="dark">{{applyBtnText}}</ion-button>
           <ion-alert 
             trigger="alert" 
             header="Are you sure you want to apply?"

@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 })
 export class JobHandlerService {
   // class Vars
-  apiUrl:string = "https://jsonblob.com/api/jsonBlob/1236327344645201920";
+  private apiUrl:string = "https://jsonblob.com/api/jsonBlob/1236327344645201920";
+  public backUrl: string = '/'; // visible for all classes
 
   // constructor + creating required class instances
   constructor(private httpClient:HttpClient, private sortingAlgorithms: SortingAlgorithmsService, private router:Router) { }
@@ -96,7 +97,10 @@ export class JobHandlerService {
   }
 
   // sends user to information page of corresponding job
-  toJobInfo(jobObj: any) {
+  toJobInfo(jobObj: any, currentUrl: string) {
+    // saving back url to be the current url
+    this.backUrl = currentUrl
+
     // creating object wrapper to send to next page
     // this method creates a very long url, but on mobile phones we can't see the url anyways
     const params: NavigationExtras = {

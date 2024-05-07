@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCard, IonMenuButton, IonSearchbar } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { DataHandlerService } from '../Services/data-handler.service';
 import { addIcons } from 'ionicons';
@@ -24,7 +25,7 @@ export class PendingRequestsPage implements OnInit {
   searchBarEntery: string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private badgeHandlerService: BadgeHandlerService, private dataHandlerService: DataHandlerService, private jobService: JobHandlerService) {
+  constructor(private activatedRoute: ActivatedRoute, private badgeHandlerService: BadgeHandlerService, private dataHandlerService: DataHandlerService, private jobService: JobHandlerService, private router:Router) {
     // adding icons
     addIcons({ returnUpBack });
   }
@@ -50,7 +51,7 @@ export class PendingRequestsPage implements OnInit {
 
   toJobInfo(jobObj: any) {
     // shared version of function so edits only have to be made on 1 function
-    this.jobService.toJobInfo(jobObj);
+    this.jobService.toJobInfo(jobObj, this.router.url);
   }
 
   // clears the 2 way databinding data

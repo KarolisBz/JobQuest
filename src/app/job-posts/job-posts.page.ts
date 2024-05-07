@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms'; // used for 2 way databinding
 import { JobHandlerService } from '../Services/job-handler.service';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton, IonInput, IonLabel, IonSearchbar, IonIcon, IonFabButton, IonFabList, IonFab, IonCardContent } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { addIcons } from 'ionicons';
 import { returnUpBack } from 'ionicons/icons';
@@ -24,7 +25,7 @@ export class JobPostsPage implements OnInit {
   searchBarEntery:string = "";
 
   // constructor
-  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private badgeHandlerService: BadgeHandlerService, private dataHandler:DataHandlerService) {
+  constructor(private activatedRoute: ActivatedRoute, private jobService: JobHandlerService, private badgeHandlerService: BadgeHandlerService, private router:Router ) {
     // adding icons
     addIcons({returnUpBack});
   }
@@ -61,7 +62,7 @@ export class JobPostsPage implements OnInit {
 
   toJobInfo(jobObj: any) {
     // shared version of function so edits only have to be made on 1 function
-    this.jobService.toJobInfo(jobObj);
+    this.jobService.toJobInfo(jobObj, this.router.url);
   }
 
   // clears the 2 way databinding data

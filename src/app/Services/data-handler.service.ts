@@ -70,8 +70,8 @@ export class DataHandlerService implements OnInit{
       // adding object to data pool
       this.dataWrapper['pendingJobs'].push(pendingJob);
 
-      // temp increase badge value by 1 until page is loaded and resorted
-      this.badgeHandler.setPendingNum(this.badgeHandler.getPendingNum() + 1)
+      // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
+      this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
     }
 
     return alreadyExists;

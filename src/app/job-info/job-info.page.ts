@@ -5,6 +5,7 @@ import { RouterLinkWithHref } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { heart, archive, copyOutline, text } from 'ionicons/icons';
 import { DataHandlerService } from '../Services/data-handler.service';
+import { JobHandlerService } from '../Services/job-handler.service';
 import { Browser } from '@capacitor/browser'; // a plugin utilizing capacitor 
 import { Clipboard } from '@capacitor/clipboard'; // a plugin utilizing capacitor
 import { Toast } from '@capacitor/toast';  // a plugin utilizing capacitor
@@ -22,6 +23,7 @@ export class JobInfoPage implements OnInit {
   jobObj: any;
   hasApplied: boolean = false;
   applyBtnText: string = "Apply";
+  backUrl: string = "/job-posts";
   private activatedRoute = inject(ActivatedRoute);
   alertButtons = [
     {
@@ -34,7 +36,7 @@ export class JobInfoPage implements OnInit {
     },
   ];
 
-  constructor(private dataHandlerService:DataHandlerService) {
+  constructor(private dataHandlerService:DataHandlerService, private jobHandler:JobHandlerService) {
     // adding icons
     addIcons({heart, archive, copyOutline});
 
@@ -87,6 +89,9 @@ export class JobInfoPage implements OnInit {
     
     // unlocking page from last object
     this.applyBtnLock(false);
+
+    // setting back btn location
+    this.backUrl = this.jobHandler.backUrl;
 
     // using for loop so we can break out early and save some preformance
     // finding out if job already applied to
