@@ -1,6 +1,7 @@
 // this class handles the data storage of the program
 import { Injectable, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { BadgeHandlerService } from './badge-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class DataHandlerService implements OnInit{
   };
   
   // constructor
-  constructor(private storage:Storage) {};
+  constructor(private storage:Storage, private badgeHandler:BadgeHandlerService) {};
 
   // creates datastore on initzliation of service
   async ngOnInit() {
@@ -51,10 +52,29 @@ export class DataHandlerService implements OnInit{
     return this.dataWrapper;
   }
 
-  // adds pending job data to be saved
-  addPendingData(pendingJobData: any): void {
-    this.dataWrapper['pendingJobs'].push(pendingJobData);
-    console.log(this.dataWrapper['pendingJobs'])
+  // adds pending job data to be saved, returns if job already exists in pending job database
+  addPendingData(pendingJob: any): boolean {
+    // only add if it doesn't exist already
+    let alreadyExists: boolean = false;
+
+    // using for loop so we can break out early and save some preformance
+    for (let i: number = 0; i < this.dataWrapper['pendingJobs'].length; i++) {
+      let job = this.dataWrapper['pendingJobs'][i];
+      if (job['jobId'] == pendingJob['jobId']) {
+        alreadyExists = true;
+        break;
+      }
+    }
+
+    if (!alreadyExists) {
+      // adding object to data pool
+      this.dataWrapper['pendingJobs'].push(pendingJob);
+
+      // temp increase badge value by 1 until page is loaded and resorted
+      this.badgeHandler.setPendingNum(this.badgeHandler.getPendingNum() + 1)
+    }
+
+    return alreadyExists;
   }
 
   // adds favourite job data to be saved

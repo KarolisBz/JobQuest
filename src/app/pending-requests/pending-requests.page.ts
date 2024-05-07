@@ -40,12 +40,6 @@ export class PendingRequestsPage implements OnInit {
 
     // setting number of results
     this.badgeHandlerService.setPendingNum(this.pendingJobData.length);
-
-    // adding commas to wage strings
-    this.pendingJobData.forEach((job: { [x: string]: any; }) => {
-      job['stringMinWage'] = this.jobService.wageToString(job['minimumSalary']);
-      job['stringMaxWage'] = this.jobService.wageToString(job['maximumSalary']);
-    });
   }
 
   // code runs when page is accessed, fetching updated info

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // used for 2 way databinding
 import { JobHandlerService } from '../Services/job-handler.service';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton, IonInput, IonLabel, IonSearchbar, IonIcon, IonFabButton, IonFabList, IonFab } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonItem, IonList, IonInfiniteScrollContent, IonButton, IonInput, IonLabel, IonSearchbar, IonIcon, IonFabButton, IonFabList, IonFab, IonCardContent } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { addIcons } from 'ionicons';
@@ -14,7 +14,7 @@ import { DataHandlerService } from '../Services/data-handler.service';
   templateUrl: './job-posts.page.html',
   styleUrls: ['./job-posts.page.scss'],
   standalone: true,
-  imports: [IonFab, IonFabList, IonFabButton, IonSearchbar, IonLabel, IonInput, IonButton, IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, IonIcon]
+  imports: [IonCardContent, IonFab, IonFabList, IonFabButton, IonSearchbar, IonLabel, IonInput, IonButton, IonInfiniteScrollContent, IonList, IonItem, IonCardSubtitle, IonCardHeader, IonCardTitle, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonInfiniteScroll, IonIcon]
 })
 export class JobPostsPage implements OnInit {
   // class variables
@@ -50,7 +50,7 @@ export class JobPostsPage implements OnInit {
         // setting number of results
         this.badgeHandlerService.setJobNum(this.jobData.length);
 
-        // adding commas to wage strings
+        // adding commas to wage strings, also adding hasApplied attribute
         this.jobData.forEach((job: { [x: string]: any; }) => {
           job['stringMinWage'] = this.jobService.wageToString(job['minimumSalary']);
           job['stringMaxWage'] = this.jobService.wageToString(job['maximumSalary']);
