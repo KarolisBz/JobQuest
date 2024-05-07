@@ -103,7 +103,7 @@ export class JobHandlerService {
       queryParams: jobObj,
     }
 
-    // routing to specified page
-    this.router.navigate(['/job-info/' + jobObj.jobTitle], params);
+    // routing to specified page, encoding with encodeURIComponent to prevent erroring with weird characters / spaces
+    this.router.navigate(['/job-info/' + encodeURIComponent(jobObj.jobTitle)], params);
   }
 }

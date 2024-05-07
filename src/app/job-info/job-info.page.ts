@@ -41,15 +41,11 @@ export class JobInfoPage implements OnInit {
     // fetching passed data
     this.activatedRoute.queryParams.subscribe(params => {
       this.jobObj = params;
-
-      // decoding string for normal html output
-      const parser = new DOMParser();
-      const parsedText = parser.parseFromString(this.jobObj['jobDescription'] , 'text/html').body.textContent;
-      console.log(parsedText)
     });
   }
 
   ngOnInit() {
+    // passing pages Id
     this.jobInfo = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
 
