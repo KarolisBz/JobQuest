@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge, IonChip, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline, menu  } from 'ionicons/icons';
 import { BadgeHandlerService } from './Services/badge-handler.service';
+import { DataHandlerService } from './Services/data-handler.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { BadgeHandlerService } from './Services/badge-handler.service';
   standalone: true,
   imports: [IonAvatar, IonChip, IonBadge, RouterLink, RouterLinkActive, CommonModule, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   public appPages = [
     { title: 'Job Posts', url: '/job-posts', icon: 'mail' },
     { title: 'Pending Requests', url: '/pending-requests', icon: 'paper-plane' },
@@ -23,12 +24,17 @@ export class AppComponent {
   ];
   public labels = ['In-person', 'Remote', 'Student', 'Part Time', 'Full Time'];
 
-  constructor(private badgeHandlerService:BadgeHandlerService, private router:Router) {
+  constructor(private badgeHandlerService:BadgeHandlerService, private router:Router, private dataHandler:DataHandlerService) {
     // adding ion-icons
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
 
     // runs first, setup for BadgeHandlerService referance
     this.badgeHandlerService.appComponent = this;
+  }
+
+  // saves database on application exit
+  ngOnDestroy(): void {
+    this.dataHandler.saveData();
   }
 
   // logged in

@@ -1,12 +1,12 @@
 // this class handles the data storage of the program
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { BadgeHandlerService } from './badge-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataHandlerService implements OnInit{
+export class DataHandlerService {
   // service fields
   private dataWrapper: any = {
     pendingJobs: [],
@@ -16,12 +16,19 @@ export class DataHandlerService implements OnInit{
   };
   
   // constructor
-  constructor(private storage:Storage, private badgeHandler:BadgeHandlerService) {};
+  constructor(private storage:Storage, private badgeHandler:BadgeHandlerService) {
+    this.initializeData();
+  };
 
   // creates datastore on initzliation of service
-  async ngOnInit() {
+  async initializeData() {
     await this.storage.create();
     this.loadData();
+  }
+
+  // save all data when closing application
+  ngOnDestroy(): void {
+    this.saveData();
   }
   
   // saves all data
@@ -44,7 +51,16 @@ export class DataHandlerService implements OnInit{
 
   // loads all the data
   async loadData() {
-    this.dataWrapper = await this.storage.get('wrappedData');
+    let tempStorage = await this.storage.get('wrappedData');
+    console.log(tempStorage);
+
+    // if first time loading database, don't overwrite default values
+    if (tempStorage != null) {
+      this.dataWrapper = tempStorage;
+
+      // setting badge data
+      this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
+    }
   }
 
   // returns data wrapped to caller function
@@ -72,6 +88,9 @@ export class DataHandlerService implements OnInit{
 
       // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
       this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
+
+      // save changes to storage
+      this.saveData()
     }
 
     return alreadyExists;

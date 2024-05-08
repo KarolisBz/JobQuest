@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // used for 2 way databinding
 import { JobHandlerService } from '../Services/job-handler.service';
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { BadgeHandlerService } from '../Services/badge-handler.service';
 import { addIcons } from 'ionicons';
 import { returnUpBack } from 'ionicons/icons';
-import { DataHandlerService } from '../Services/data-handler.service';
 
 @Component({
   selector: 'app-job-posts',

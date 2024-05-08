@@ -1,7 +1,6 @@
 // this class manages badges values and functions
 import { Injectable } from '@angular/core';
-import { AppComponent } from '../app.component';
-import { Router } from '@angular/router';
+//import { AppComponent } from '../app.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +14,10 @@ export class BadgeHandlerService {
   private accNotficationNum: number = 0;
 
   // constructor (fetching needed components)
-  constructor(private router:Router) { }
+  constructor() { }
 
   // fetching appcomponents class reference (to create a bootleg event listener)
-  public appComponent:AppComponent = new AppComponent(this, this.router);
+  public appComponent:any;
 
   // update menu badges
   updateBadges(): void {
