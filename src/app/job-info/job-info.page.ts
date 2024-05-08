@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonBackButton, IonButton, IonCard, IonLabel, IonItem, IonList, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon, IonAlert } from '@ionic/angular/standalone';
 import { RouterLinkWithHref } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { heart, archive, copyOutline, text } from 'ionicons/icons';
+import { heart, archive, copyOutline, heartOutline, archiveOutline } from 'ionicons/icons';
 import { DataHandlerService } from '../Services/data-handler.service';
 import { JobHandlerService } from '../Services/job-handler.service';
 import { Browser } from '@capacitor/browser'; // a plugin utilizing capacitor 
@@ -22,6 +22,10 @@ export class JobInfoPage implements OnInit {
   public jobInfo!: string;
   jobObj: any;
   hasApplied: boolean = false;
+  hasArchived:boolean = false;
+  hasFavourite:boolean = false;
+  favIcon: string = "heart-Outline";
+  archiveIcon: string = "archive-Outline";
   applyBtnText: string = "Apply";
   backUrl: string = "/job-posts";
   private activatedRoute = inject(ActivatedRoute);
@@ -38,7 +42,7 @@ export class JobInfoPage implements OnInit {
 
   constructor(private dataHandlerService:DataHandlerService, private jobHandler:JobHandlerService) {
     // adding icons
-    addIcons({heart, archive, copyOutline});
+    addIcons({heart, archive, copyOutline, heartOutline, archiveOutline});
 
     // fetching passed data
     this.activatedRoute.queryParams.subscribe(params => {
@@ -53,12 +57,28 @@ export class JobInfoPage implements OnInit {
 
   // adds job obj to favourites data
   favouriteJob() {
-
+    if (this.hasFavourite) {
+      // unfavourite
+      this.dataHandlerService.removeFavoriteData(this.jobObj);
+      this.toggleFavBtn(false);
+    } else {
+      // favourite
+      this.dataHandlerService.addFavoriteData(this.jobObj);
+      this.toggleFavBtn(true);
+    }
   }
 
   // adds job obj to archive-job data
   archiveJob() {
-
+    if (this.hasArchived) {
+      // unfavourite
+      this.dataHandlerService.removeArchivedData(this.jobObj);
+      this.toggleArchiveBtn(false);
+    } else {
+      // favourite
+      this.dataHandlerService.addArchivedData(this.jobObj);
+      this.toggleArchiveBtn(true);
+    }
   }
 
   // opens site in app allowing for event listening
@@ -85,20 +105,40 @@ export class JobInfoPage implements OnInit {
 
   // code runs when page is accessed, stopping people from re-applying
   ionViewWillEnter() {
-    let jobData:any = this.dataHandlerService.getData()['pendingJobs'];
+    let jobData:any = this.dataHandlerService.getData();
     
     // unlocking page from last object
     this.applyBtnLock(false);
+    this.toggleFavBtn(false);
+    this.toggleArchiveBtn(false);
 
     // setting back btn location
     this.backUrl = this.jobHandler.backUrl;
 
     // using for loop so we can break out early and save some preformance
     // finding out if job already applied to
-    for (let i: number = 0; i < jobData.length; i++) {
-      let job = jobData[i];
+    for (let i: number = 0; i < jobData['pendingJobs'].length; i++) {
+      let job = jobData['pendingJobs'][i];
       if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
         this.applyBtnLock(true);
+        break;
+      }
+    }
+
+    // if has favourite
+    for (let i: number = 0; i < jobData['favoriteJobs'].length; i++) {
+      let job = jobData['favoriteJobs'][i];
+      if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
+        this.toggleFavBtn(true);
+        break;
+      }
+    }
+
+     // if has archived
+     for (let i: number = 0; i < jobData['archivedJobs'].length; i++) {
+      let job = jobData['archivedJobs'][i];
+      if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
+        this.toggleArchiveBtn(true);
         break;
       }
     }
@@ -120,12 +160,33 @@ export class JobInfoPage implements OnInit {
 
   // locks the apply button when already applied
   applyBtnLock(state: boolean) {
+    this.hasApplied = state;
     if (state) {
-      this.hasApplied = true;
       this.applyBtnText = "Applied";
     } else {
-      this.hasApplied = false;
       this.applyBtnText = "Apply";
+    }
+  }
+
+  // changes fav button state
+  toggleFavBtn(isToggled: boolean)
+  {
+    this.hasFavourite = isToggled;
+    if (isToggled) {
+      this.favIcon = "heart";
+    } else {
+      this.favIcon = "heart-Outline";
+    }
+  }
+
+  // changes archived button state
+  toggleArchiveBtn(isToggled: boolean)
+  {
+    this.hasArchived = isToggled;
+    if (isToggled) {
+      this.archiveIcon = "archive";
+    } else {
+      this.archiveIcon = "archive-Outline";
     }
   }
 }

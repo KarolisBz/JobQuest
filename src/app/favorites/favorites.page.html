@@ -1,13 +1,35 @@
 <ion-header [translucent]="true">
+  <!--title + menu + search bar -->
   <ion-toolbar>
-    <ion-title>favorites</ion-title>
+    <ion-title>Favorite Job Posts</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header>
+  <ion-toolbar>
+    <!-- EXAMPLE of 2 way databinding and ionInput event -->
+    <!-- Had to use ionCancel workaround because ionClear cannot clear 2 way databinding-->
+    <ion-searchbar show-cancel-button="focus" showClearButton="never" clearIcon="" [(ngModel)]="searchBarEntery"
+      [debounce]="500" (ionCancel)="clearInput()" (ionInput)="searchJob()" cancelButtonIcon="return-up-back"></ion-searchbar>
+  </ion-toolbar>
 
+</ion-header>
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">favorites</ion-title>
+      <ion-title size="large">we are</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div id="container">
+    <ion-card *ngFor="let job of favoriteJobData">
+      <!--individual card code-->
+      <ion-card-header (click)="toJobInfo(job)">
+        <ion-card-title>{{job.jobTitle}}</ion-card-title> 
+        <ion-card-subtitle>Expiration Date: {{job.expirationDate}}</ion-card-subtitle>
+        <ion-card-subtitle>Location Eircode: {{job.locationName}}</ion-card-subtitle>
+        <ion-card-subtitle>Salary: {{job.stringMaxWage}} {{job.currency}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </div>
 </ion-content>

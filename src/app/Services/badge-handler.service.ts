@@ -17,6 +17,7 @@ export class BadgeHandlerService {
   constructor() { }
 
   // fetching appcomponents class reference (to create a bootleg event listener)
+  // this is done in Appcompnent constructor which is initialized before any other class
   public appComponent:any;
 
   // update menu badges

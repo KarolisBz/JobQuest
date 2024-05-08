@@ -67,12 +67,12 @@
         </ion-item>
 
         <ion-item>
-          <ion-button slot="end" color="dark">
-            <ion-icon name="archive" color="light" aria-label="Archive" (click)="archiveJob()"></ion-icon>
+          <ion-button slot="end" color="dark" (click)="archiveJob()">
+            <ion-icon name="{{archiveIcon}}" color="light" aria-label="Archive"></ion-icon>
           </ion-button>
 
-          <ion-button slot="end" color="dark">
-            <ion-icon name="heart" style="color: red;" aria-label="Favorite" (click)="favouriteJob()"></ion-icon>
+          <ion-button slot="end" color="dark" (click)="favouriteJob()">
+            <ion-icon name="{{favIcon}}" style="color: red;" aria-label="Favorite"></ion-icon>
           </ion-button>
         </ion-item>
 

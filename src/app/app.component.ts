@@ -76,8 +76,8 @@ export class AppComponent implements OnDestroy {
     // setting values that are databinded
     this.badgeDictionary["Job Posts"] = jobNum;
     this.badgeDictionary["Pending Requests"] = pendingNum;
-    this.badgeDictionary.Favorites = favNum;
-    this.badgeDictionary.Archived = archivedNum;
-    this.badgeDictionary.Account = accNotficationNum;
+    this.badgeDictionary['Favorites'] = favNum;
+    this.badgeDictionary['Archived'] = archivedNum;
+    this.badgeDictionary['Account'] = accNotficationNum;
   }
 }
