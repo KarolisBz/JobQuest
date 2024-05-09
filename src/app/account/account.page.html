@@ -8,9 +8,24 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">account</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">Login</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <div>
+            <strong class="capitalize center">Email:&nbsp;</strong>
+            <br>
+            <strong class="capitalize center">Password:&nbsp;</strong>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-button class="ion-textCenter">Login</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
