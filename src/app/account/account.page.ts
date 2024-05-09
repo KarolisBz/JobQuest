@@ -11,7 +11,7 @@ import { DataHandlerService } from '../Services/data-handler.service';
   standalone: true,
   imports: [IonToggle, IonRadioGroup, IonRadio, IonModal, IonDatetimeButton, IonDatetime, IonLabel, IonCol, IonRow, IonGrid, IonInput, IonAlert, IonIcon, IonButton, IonItem, IonList, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
 })
-export class AccountPage {
+export class AccountPage implements OnInit {
   // class vars
   loggedIn: boolean = false;
   loginPage: boolean = true;
@@ -33,26 +33,40 @@ export class AccountPage {
     this.dateOfBirth = new Date().toISOString();
   }
 
+  // fetches account information
+  ngOnInit(): void {
+    this.setupAccountContent();
+  }
+
   // code runs when page is accessed, fetching updated info
-  ionViewWillEnter() {
-    this.currentAccount = this.dataHandler.getData()['currentAccount'];
-    if (this.currentAccount['stayLoggedIn']) { // sneaky way of checking if logged in without looping through keys
+  ionViewWillEnter(): void {
+    this.setupAccountContent();
+  }
+
+  // sets up account content if logged in
+  async setupAccountContent(): Promise<void> {
+    await this.dataHandler.getDataAsync().then((wrappedData: any) => {
+      this.currentAccount = wrappedData['currentAccount'];
+    })
+
+    if (this.currentAccount['created']) { // sneaky way of checking if logged in without looping through keys
       // user is logged in
       this.loggedIn = true
+      let splitString: string = this.currentAccount['dateofBirth'].split("T", 1);
+      this.currentAccount['dateofBirth'] = splitString[0]
     }
-    else
-    {
+    else {
       this.loggedIn = false;
     }
   }
 
   // switches between loginpage and create page content
-  switchPage(page:boolean) {
+  switchPage(page:boolean): void {
     this.loginPage = page;
   }
 
   // attempts to login user
-  login() {
+  login(): void {
     // creating account object
     let loginObj = {
       email: this.loginEmail,
@@ -70,8 +84,14 @@ export class AccountPage {
     }
   }
 
+  // logs user out
+  logout(): void {
+    this.dataHandler.logoutUser();
+    this.loggedIn = false;
+  }
+
   // attempts to create an account
-  createAccount() {
+  createAccount(): void {
     // basic data validation
     if (this.createPassword1 != this.createPassword2) {
       alert("passwords don't match!");
@@ -100,7 +120,8 @@ export class AccountPage {
       firstName: this.firstName,
       secondName: this.secondName,
       dateofBirth: this.dateOfBirth,
-      phoneNo: this.phoneNo
+      phoneNo: this.phoneNo,
+      created: true,
     }
 
     let duplicateEmail:boolean = this.dataHandler.addAccountData(accountObj);

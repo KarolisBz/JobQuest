@@ -52,10 +52,8 @@ export class AppComponent implements OnDestroy {
   // another bootleg event listner for login
   login(accountData: any)
   {
-    console.log(accountData.length)
-    if (accountData['stayLoggedIn']) { // sneaky way of checking if logged in without looping through keys
+    if (accountData['created']) { // sneaky way of checking if logged in without looping through keys
       // login
-      console.log("accountData")
       this.accountObj = accountData;
       this.isLoggedIn = true;
     } else {

@@ -105,4 +105,37 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <ion-card *ngIf="loggedIn">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">Your Account</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <strong class="capitalize center">First Name:&nbsp;</strong> {{ currentAccount.firstName }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Second Name:&nbsp;</strong> {{ currentAccount.secondName }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Email:&nbsp;</strong> {{ currentAccount.email }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Date Of Birth:&nbsp;</strong> {{ currentAccount.dateofBirth }}
+        </ion-item>
+
+        <ion-item>
+          <strong class="capitalize center">Phone No.:&nbsp;</strong> {{ currentAccount.phoneNo }}
+        </ion-item>
+
+        <ion-item>
+          <ion-button class="ion-textCenter" size="large" color="dark" (click)="logout()">Logout</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

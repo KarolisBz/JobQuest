@@ -9,6 +9,7 @@ import { toLower } from 'ionicons/dist/types/components/icon/utils';
 })
 export class DataHandlerService {
   // service fields
+  dataLoaded:boolean = false;
   private dataWrapper: any = {
     pendingJobs: [],
     favoriteJobs: [],
@@ -35,7 +36,7 @@ export class DataHandlerService {
   
   // saves all data
   async saveData() {
-    await this.storage.set('wrappedData0.3', this.dataWrapper)
+    await this.storage.set('wrappedData0.4', this.dataWrapper)
     .then(
       () =>
         {
@@ -53,7 +54,7 @@ export class DataHandlerService {
 
   // loads all the data
   async loadData() {
-    let tempStorage = await this.storage.get('wrappedData0.3');
+    let tempStorage = await this.storage.get('wrappedData0.4');
     console.log(tempStorage);
 
     // if first time loading database, don't overwrite default values
@@ -68,11 +69,28 @@ export class DataHandlerService {
       // checking if to logout / login user from last session
       if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
         this.dataWrapper['currentAccount'] = [];
-      } 
-      
+      }
+
       // messages root account data
       this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
     }
+
+    this.dataLoaded = true;
+  }
+
+  // returns data wrapped to caller function as a promise
+  // had to make this function as a promise because data was being requested before it loaded
+  getDataAsync = () => {
+    return new Promise((resolve) => {
+      const checkData = () =>  {
+        if (this.dataLoaded) {
+          resolve(this.dataWrapper); // only returns when true
+        } else {
+          setTimeout(checkData, 1000) // check every second if data has been loaded
+        }
+      };
+      checkData(); // runs the function inside the promise function
+    });
   }
 
   // returns data wrapped to caller function
@@ -267,5 +285,16 @@ export class DataHandlerService {
     }
 
     return success;
+  }
+
+  // logs user out
+  logoutUser() {
+    this.dataWrapper['currentAccount'] = [];
+
+    // messages root account data
+    this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
+
+    // save changes to storage
+    this.saveData()
   }
 }

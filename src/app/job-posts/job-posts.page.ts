@@ -32,7 +32,7 @@ export class JobPostsPage implements OnInit {
   ngOnInit() {
     // fetching ID
     this.jobPosts = this.activatedRoute.snapshot.paramMap.get('id') as string;
-
+    console.log("reloaded")
     // on page initilization, subscribe to api data
     this.jobService.GetJobData().subscribe(
       (data) => {
