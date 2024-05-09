@@ -30,7 +30,6 @@ log.txt
 /bazel-out
 
 # Node
-/node_modules
 npm-debug.log
 yarn-error.log
 
