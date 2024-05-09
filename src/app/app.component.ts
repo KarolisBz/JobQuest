@@ -15,6 +15,7 @@ import { DataHandlerService } from './Services/data-handler.service';
   imports: [IonAvatar, IonChip, IonBadge, RouterLink, RouterLinkActive, CommonModule, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
 })
 export class AppComponent implements OnDestroy {
+  // class vars
   public appPages = [
     { title: 'Job Posts', url: '/job-posts', icon: 'mail' },
     { title: 'Pending Requests', url: '/pending-requests', icon: 'paper-plane' },
@@ -23,6 +24,14 @@ export class AppComponent implements OnDestroy {
     { title: 'Account', url: '/account', icon: 'person'},
   ];
   public labels = ['In-person', 'Remote', 'Student', 'Part Time', 'Full Time'];
+  accountObj: any = {
+    email: '',
+    password: '',
+    firstName: '',
+    secondName: '',
+    dateofBirth: '',
+    phoneNo: ''
+  }
 
   constructor(private badgeHandlerService:BadgeHandlerService, private router:Router, private dataHandler:DataHandlerService) {
     // adding ion-icons
@@ -38,7 +47,23 @@ export class AppComponent implements OnDestroy {
   }
 
   // logged in
-  isLoggedIn:boolean = true;
+  isLoggedIn:boolean = false;
+
+  // another bootleg event listner for login
+  login(accountData: any)
+  {
+    console.log(accountData.length)
+    if (accountData['stayLoggedIn']) { // sneaky way of checking if logged in without looping through keys
+      // login
+      console.log("accountData")
+      this.accountObj = accountData;
+      this.isLoggedIn = true;
+    } else {
+      // logout
+      this.isLoggedIn = false;
+      this.toAccountPage();
+    }
+  }
 
   // we use this function to hide the menu on route
   // fetching instance, credit to https://forum.ionicframework.com/t/how-do-i-get-html-element-values/94925/5 for post
@@ -47,7 +72,7 @@ export class AppComponent implements OnDestroy {
 
   toAccountPage():void {
     // routing to specified page
-    this.router.navigate(['folder/Account']);
+    this.router.navigate(['/account']);
     
     // closing side menu
     this.menu.close();

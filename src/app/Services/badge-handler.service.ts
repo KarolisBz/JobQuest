@@ -71,4 +71,9 @@ export class BadgeHandlerService {
   getAccNotficationNum(): number {
     return this.accNotficationNum;
   }
+
+  // used to message bootleg accountcomponent event listner
+  accountPortal(accountObj: any): void {
+    this.appComponent.login(accountObj);
+  }
 }

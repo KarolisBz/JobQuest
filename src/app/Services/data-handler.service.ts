@@ -2,6 +2,7 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { BadgeHandlerService } from './badge-handler.service';
+import { toLower } from 'ionicons/dist/types/components/icon/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class DataHandlerService {
     favoriteJobs: [],
     archivedJobs: [],
     accountData: [],
+    currentAccount: [],
   };
   
   // constructor
@@ -33,7 +35,7 @@ export class DataHandlerService {
   
   // saves all data
   async saveData() {
-    await this.storage.set('wrappedData0.1', this.dataWrapper)
+    await this.storage.set('wrappedData0.3', this.dataWrapper)
     .then(
       () =>
         {
@@ -51,7 +53,7 @@ export class DataHandlerService {
 
   // loads all the data
   async loadData() {
-    let tempStorage = await this.storage.get('wrappedData0.1');
+    let tempStorage = await this.storage.get('wrappedData0.3');
     console.log(tempStorage);
 
     // if first time loading database, don't overwrite default values
@@ -62,6 +64,14 @@ export class DataHandlerService {
       this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
       this.badgeHandler.setArchivedNum(this.dataWrapper['archivedJobs'].length)
       this.badgeHandler.setFavNum(this.dataWrapper['favoriteJobs'].length)
+
+      // checking if to logout / login user from last session
+      if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
+        this.dataWrapper['currentAccount'] = [];
+      } 
+      
+      // messages root account data
+      this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
     }
   }
 
@@ -208,8 +218,54 @@ export class DataHandlerService {
     return located;
   }
 
-  // sets account info data to be saved
-  setAccountData(accountData: any): void {
-    this.dataWrapper['accountData'] = accountData;
+  // adds account info data to be saved
+  addAccountData(accountData: any): boolean {
+    // only add if it doesn't exist already
+    let alreadyExists: boolean = false;
+
+    // using for loop so we can break out early and save some preformance
+    for (let i: number = 0; i < this.dataWrapper['accountData'].length; i++) {
+      let acc = this.dataWrapper['accountData'][i];
+      if (acc['email'] == accountData['email']) {
+        alreadyExists = true;
+        break;
+      }
+    }
+
+    if (!alreadyExists) {
+      // adding object to data pool
+      this.dataWrapper['accountData'].push(accountData);
+
+      // save changes to storage
+      this.saveData()
+    }
+
+    return alreadyExists;
+  }
+
+  // attempts to login
+  loginUser(accountData: any): boolean  {
+    let success: boolean = false;
+
+    // searching for email
+     for (let i: number = 0; i < this.dataWrapper['accountData'].length; i++) {
+      let acc = this.dataWrapper['accountData'][i];
+      if (acc['email'].toLowerCase() == accountData['email'].toLowerCase() && acc['password'] == accountData['password']) {
+        success = true;
+
+        // setting new account
+        let objCopy = {...acc, stayLoggedIn: accountData['stayLoggedIn']}
+        this.dataWrapper['currentAccount'] = objCopy;
+
+        // messages root account data
+        this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
+
+        // save changes to storage
+        this.saveData()
+        break;
+      }
+    }
+
+    return success;
   }
 }

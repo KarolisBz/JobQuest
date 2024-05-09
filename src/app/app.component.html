@@ -9,7 +9,7 @@
             <ion-avatar>
               <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
             </ion-avatar>
-            <ion-label (click)="toAccountPage()">myEmail&#64;gmail.com</ion-label>
+            <ion-label (click)="toAccountPage()">{{accountObj.email}}</ion-label>
           </ion-chip>
           <ion-note *ngIf="!isLoggedIn" style="color: lightblue; text-decoration-line: underline;" (click)="toAccountPage()">Log In</ion-note>
 

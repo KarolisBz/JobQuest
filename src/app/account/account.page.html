@@ -8,22 +8,99 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card>
+  <ion-card *ngIf="loginPage && !loggedIn">
     <ion-card-header>
       <ion-card-title style="text-align: center;">Login</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <div>
-            <strong class="capitalize center">Email:&nbsp;</strong>
-            <br>
-            <strong class="capitalize center">Password:&nbsp;</strong>
-          </div>
+          <ion-input label="Email" type="email" placeholder="email@domain.com" [(ngModel)]="loginEmail"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-button class="ion-textCenter">Login</ion-button>
+          <ion-input label="Password" type="Password" placeholder="password" [(ngModel)]="loginPassword"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-button class="ion-textCenter" size="large" color="dark" (click)="login()">Login</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <!-- just for show for this project-->
+                <a target="_blank" rel="noopener noreferrer">Forgot password?</a>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <a target="_blank" rel="noopener noreferrer" (click)="switchPage(false)">Create Account</a>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+
+        <ion-item>
+          <ion-toggle [(ngModel)]="stayLoggedIn" enable-on-off-labels="true" label-placement="start" justify="start">keep me logged in?</ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!loginPage && !loggedIn">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;">Create Account</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-input label="Email" type="email" placeholder="email@domain.com" errorText="Invalid email" [(ngModel)]="createEmail"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Password" type="Password" placeholder="password" [(ngModel)]="createPassword1"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Password" type="Password" placeholder="confirm password" [(ngModel)]="createPassword2"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="First Name" placeholder="eg: John" [(ngModel)]="firstName"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Second Name" placeholder="eg: Smith" [(ngModel)]="secondName"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label slot="start" style="margin: 0;">Date of Birth:</ion-label>
+          <ion-datetime-button datetime="date" slot="start"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="date" presentation="date" [(ngModel)]="dateOfBirth"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Phone No." type="tel" placeholder="888-888-8888" [(ngModel)]="phoneNo"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-button class="ion-textCenter" size="large" color="dark" (click)="createAccount()">Sign Up</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <!-- just for show for this project-->
+                <a target="_blank" rel="noopener noreferrer">Forgot password?</a>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <a target="_blank" rel="noopener noreferrer" (click)="switchPage(true)">Have an account?</a>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-item>
       </ion-list>
     </ion-card-content>
