@@ -24,7 +24,7 @@ export class JobHandlerService {
 
   // sorts all jobs that are closest to search bar input in desc order in respect to their title
   // this mini search engine is not case sensitive, and returns the sorted job data
-  getSimilerJobs(searchBarEntery: String, jobData: any, constJobData: any) {
+  getSimilerJobs(searchBarEntery: String, jobData: any, constJobData: any): any {
     // if search is empty, return default search results
     if (searchBarEntery == "" || searchBarEntery == " ") {
       return constJobData;
@@ -97,7 +97,7 @@ export class JobHandlerService {
   }
 
   // sends user to information page of corresponding job
-  toJobInfo(jobObj: any, currentUrl: string) {
+  toJobInfo(jobObj: any, currentUrl: string): void {
     // saving back url to be the current url
     this.backUrl = currentUrl
 

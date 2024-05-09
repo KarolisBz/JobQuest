@@ -11,11 +11,12 @@ export class DataHandlerService {
   // service fields
   dataLoaded:boolean = false;
   private dataWrapper: any = {
-    pendingJobs: [],
-    favoriteJobs: [],
-    archivedJobs: [],
     accountData: [],
-    currentAccount: [],
+    currentAccount: {
+      pendingJobs: [],
+      favoriteJobs: [],
+      archivedJobs: [],
+    },
   };
   
   // constructor
@@ -36,7 +37,7 @@ export class DataHandlerService {
   
   // saves all data
   async saveData() {
-    await this.storage.set('wrappedData0.4', this.dataWrapper)
+    await this.storage.set('wrappedData0.5', this.dataWrapper)
     .then(
       () =>
         {
@@ -54,17 +55,20 @@ export class DataHandlerService {
 
   // loads all the data
   async loadData() {
-    let tempStorage = await this.storage.get('wrappedData0.4');
+    let tempStorage = await this.storage.get('wrappedData0.5');
     console.log(tempStorage);
 
     // if first time loading database, don't overwrite default values
     if (tempStorage != null) {
       this.dataWrapper = tempStorage;
 
-      // setting badge data
-      this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
-      this.badgeHandler.setArchivedNum(this.dataWrapper['archivedJobs'].length)
-      this.badgeHandler.setFavNum(this.dataWrapper['favoriteJobs'].length)
+      // if data exists load badges
+      if (this.dataWrapper['currentAccount']['created']) {
+        // setting badge data
+        this.badgeHandler.setPendingNum(this.dataWrapper['currentAccount']['pendingJobs'].length)
+        this.badgeHandler.setArchivedNum(this.dataWrapper['currentAccount']['archivedJobs'].length)
+        this.badgeHandler.setFavNum(this.dataWrapper['currentAccount']['favoriteJobs'].length)
+      }
 
       // checking if to logout / login user from last session
       if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
@@ -84,18 +88,13 @@ export class DataHandlerService {
     return new Promise((resolve) => {
       const checkData = () =>  {
         if (this.dataLoaded) {
-          resolve(this.dataWrapper); // only returns when true
+          resolve(this.dataWrapper['currentAccount']); // only returns when true
         } else {
-          setTimeout(checkData, 1000) // check every second if data has been loaded
+          setTimeout(checkData, 500) // check every 0.5 seconds if data has been loaded
         }
       };
       checkData(); // runs the function inside the promise function
     });
-  }
-
-  // returns data wrapped to caller function
-  getData(): any {
-    return this.dataWrapper;
   }
 
   // adds pending job data to be saved, returns if job already exists in pending job database
@@ -104,8 +103,8 @@ export class DataHandlerService {
     let alreadyExists: boolean = false;
 
     // using for loop so we can break out early and save some preformance
-    for (let i: number = 0; i < this.dataWrapper['pendingJobs'].length; i++) {
-      let job = this.dataWrapper['pendingJobs'][i];
+    for (let i: number = 0; i < this.dataWrapper['currentAccount']['pendingJobs'].length; i++) {
+      let job = this.dataWrapper['currentAccount']['pendingJobs'][i];
       if (job['jobId'] == pendingJob['jobId']) {
         alreadyExists = true;
         break;
@@ -114,10 +113,10 @@ export class DataHandlerService {
 
     if (!alreadyExists) {
       // adding object to data pool
-      this.dataWrapper['pendingJobs'].push(pendingJob);
+      this.dataWrapper['currentAccount']['pendingJobs'].push(pendingJob);
 
       // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
-      this.badgeHandler.setPendingNum(this.dataWrapper['pendingJobs'].length)
+      this.badgeHandler.setPendingNum(this.dataWrapper['currentAccount']['pendingJobs'].length)
 
       // save changes to storage
       this.saveData()
@@ -132,8 +131,8 @@ export class DataHandlerService {
     let alreadyExists: boolean = false;
 
     // using for loop so we can break out early and save some preformance
-    for (let i: number = 0; i < this.dataWrapper['favoriteJobs'].length; i++) {
-      let job = this.dataWrapper['favoriteJobs'][i];
+    for (let i: number = 0; i < this.dataWrapper['currentAccount']['favoriteJobs'].length; i++) {
+      let job = this.dataWrapper['currentAccount']['favoriteJobs'][i];
       if (job['jobId'] == favoriteJobs['jobId']) {
         alreadyExists = true;
         break;
@@ -142,10 +141,10 @@ export class DataHandlerService {
 
     if (!alreadyExists) {
       // adding object to data pool
-      this.dataWrapper['favoriteJobs'].push(favoriteJobs);
+      this.dataWrapper['currentAccount']['favoriteJobs'].push(favoriteJobs);
 
       // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
-      this.badgeHandler.setFavNum(this.dataWrapper['favoriteJobs'].length)
+      this.badgeHandler.setFavNum(this.dataWrapper['currentAccount']['favoriteJobs'].length)
 
       // save changes to storage
       this.saveData()
@@ -160,8 +159,8 @@ export class DataHandlerService {
     let alreadyExists: boolean = false;
 
     // using for loop so we can break out early and save some preformance
-    for (let i: number = 0; i < this.dataWrapper['archivedJobs'].length; i++) {
-      let job = this.dataWrapper['archivedJobs'][i];
+    for (let i: number = 0; i < this.dataWrapper['currentAccount']['archivedJobs'].length; i++) {
+      let job = this.dataWrapper['currentAccount']['archivedJobs'][i];
       if (job['jobId'] == archivedJobs['jobId']) {
         alreadyExists = true;
         break;
@@ -170,10 +169,10 @@ export class DataHandlerService {
 
     if (!alreadyExists) {
       // adding object to data pool
-      this.dataWrapper['archivedJobs'].push(archivedJobs);
+      this.dataWrapper['currentAccount']['archivedJobs'].push(archivedJobs);
 
       // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
-      this.badgeHandler.setArchivedNum(this.dataWrapper['archivedJobs'].length)
+      this.badgeHandler.setArchivedNum(this.dataWrapper['currentAccount']['archivedJobs'].length)
 
       // save changes to storage
       this.saveData()
@@ -188,17 +187,17 @@ export class DataHandlerService {
     let located: boolean = false;
 
     // using for loop so we can break out early and save some preformance
-    for (let i: number = 0; i < this.dataWrapper['favoriteJobs'].length; i++) {
-      let job = this.dataWrapper['favoriteJobs'][i];
+    for (let i: number = 0; i < this.dataWrapper['currentAccount']['favoriteJobs'].length; i++) {
+      let job = this.dataWrapper['currentAccount']['favoriteJobs'][i];
       if (job['jobId'] == favoriteJobs['jobId']) {
         // found target
         located = true;
 
         // removing object from data pool
-        this.dataWrapper['favoriteJobs'].splice(i, 1);
+        this.dataWrapper['currentAccount']['favoriteJobs'].splice(i, 1);
 
         // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
-        this.badgeHandler.setFavNum(this.dataWrapper['favoriteJobs'].length)
+        this.badgeHandler.setFavNum(this.dataWrapper['currentAccount']['favoriteJobs'].length)
 
         // save changes to storage
         this.saveData()
@@ -215,17 +214,17 @@ export class DataHandlerService {
     let located: boolean = false;
 
     // using for loop so we can break out early and save some preformance
-    for (let i: number = 0; i < this.dataWrapper['archivedJobs'].length; i++) {
-      let job = this.dataWrapper['archivedJobs'][i];
+    for (let i: number = 0; i < this.dataWrapper['currentAccount']['archivedJobs'].length; i++) {
+      let job = this.dataWrapper['currentAccount']['archivedJobs'][i];
       if (job['jobId'] == archivedJobs['jobId']) {
         // found target
         located = true;
 
         // removing object from data pool
-        this.dataWrapper['archivedJobs'].splice(i, 1);
+        this.dataWrapper['currentAccount']['archivedJobs'].splice(i, 1);
 
         // changes badge value to total, as search bar gets wiped anyways for anything but job-posts
-        this.badgeHandler.setArchivedNum(this.dataWrapper['archivedJobs'].length)
+        this.badgeHandler.setArchivedNum(this.dataWrapper['currentAccount']['archivedJobs'].length)
 
         // save changes to storage
         this.saveData()
@@ -278,6 +277,11 @@ export class DataHandlerService {
         // messages root account data
         this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
 
+        // reloading badges
+        this.badgeHandler.setPendingNum(this.dataWrapper['currentAccount']['pendingJobs'].length)
+        this.badgeHandler.setArchivedNum(this.dataWrapper['currentAccount']['archivedJobs'].length)
+        this.badgeHandler.setFavNum(this.dataWrapper['currentAccount']['favoriteJobs'].length)
+
         // save changes to storage
         this.saveData()
         break;
@@ -288,11 +292,16 @@ export class DataHandlerService {
   }
 
   // logs user out
-  logoutUser() {
+  logoutUser(): void {
     this.dataWrapper['currentAccount'] = [];
 
     // messages root account data
     this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
+
+    // reloading badges
+    this.badgeHandler.setPendingNum(0)
+    this.badgeHandler.setArchivedNum(0)
+    this.badgeHandler.setFavNum(0)
 
     // save changes to storage
     this.saveData()

@@ -30,26 +30,29 @@ export class PendingRequestsPage implements OnInit {
     addIcons({ returnUpBack });
   }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     // fetching ID
     this.pendingRequests = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
     // on page initilization, fetch inital saved data to start off with
-    let dataWrapper = this.dataHandlerService.getData();
-    this.pendingJobData = dataWrapper['pendingJobs'];
-    this.constPendingJobData = dataWrapper['pendingJobs'];
+    await this.dataHandlerService.getDataAsync().then((data: any) => {
+      this.pendingJobData = data['pendingJobs'];
+      this.constPendingJobData = data['pendingJobs'];
+    })
 
     // setting number of results
     this.badgeHandlerService.setPendingNum(this.pendingJobData.length);
   }
 
   // code runs when page is accessed, fetching updated info
-  ionViewWillEnter() {
+  async ionViewWillEnter(): Promise<void> {
     // different from onInit as it re-sorts when necessary and doesn't add wage to string
-    this.setPageData(this.dataHandlerService.getData()['pendingJobs']);
+    await this.dataHandlerService.getDataAsync().then((data: any) => {
+      this.setPageData(data['pendingJobs']);
+    })
   }
 
-  toJobInfo(jobObj: any) {
+  toJobInfo(jobObj: any): void {
     // shared version of function so edits only have to be made on 1 function
     this.jobService.toJobInfo(jobObj, this.router.url);
   }
@@ -61,7 +64,7 @@ export class PendingRequestsPage implements OnInit {
   }
 
   // gets similer words to search input and changes result number on badge
-  searchJob() {
+  searchJob(): void {
     // fetching similer jobs
     this.pendingJobData = this.jobService.getSimilerJobs(this.searchBarEntery, this.pendingJobData, this.constPendingJobData);
 
@@ -70,7 +73,7 @@ export class PendingRequestsPage implements OnInit {
   }
 
   // updates the pages data for visuals
-  setPageData(newData: any) {
+  setPageData(newData: any): void {
     // if data is sorted, we need to resort it when updating data
     if (this.constPendingJobData.length != this.pendingJobData.length) {
       this.constPendingJobData = newData;

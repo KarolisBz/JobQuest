@@ -30,26 +30,29 @@ export class ArchivedPage implements OnInit {
    addIcons({ returnUpBack });
  }
 
- ngOnInit() {
+ async ngOnInit(): Promise<void> {
    // fetching ID
    this.pendingRequests = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
    // on page initilization, fetch inital saved data to start off with
-   let dataWrapper = this.dataHandlerService.getData();
-   this.archivedJobData = dataWrapper['archivedJobs'];
-   this.constArchivedJobData = dataWrapper['archivedJobs'];
+   await this.dataHandlerService.getDataAsync().then((data: any) => {
+     this.archivedJobData = data['archivedJobs'];
+     this.constArchivedJobData = data['archivedJobs'];
+   })
 
    // setting number of results
    this.badgeHandlerService.setArchivedNum(this.archivedJobData.length);
  }
 
  // code runs when page is accessed, fetching updated info
- ionViewWillEnter() {
+ async ionViewWillEnter(): Promise<void> {
    // different from onInit as it re-sorts when necessary and doesn't add wage to string
-   this.setPageData(this.dataHandlerService.getData()['archivedJobs']);
+   await this.dataHandlerService.getDataAsync().then((data: any) => {
+    this.setPageData(data['archivedJobs']);
+  })
  }
 
- toJobInfo(jobObj: any) {
+ toJobInfo(jobObj: any): void {
    // shared version of function so edits only have to be made on 1 function
    this.jobService.toJobInfo(jobObj, this.router.url);
  }
@@ -61,7 +64,7 @@ export class ArchivedPage implements OnInit {
  }
 
  // gets similer words to search input and changes result number on badge
- searchJob() {
+ searchJob(): void {
    // fetching similer jobs
    this.archivedJobData = this.jobService.getSimilerJobs(this.searchBarEntery, this.archivedJobData, this.constArchivedJobData);
 
@@ -70,7 +73,7 @@ export class ArchivedPage implements OnInit {
  }
 
  // updates the pages data for visuals
- setPageData(newData: any) {
+ setPageData(newData: any): void {
    // if data is sorted, we need to resort it when updating data
    if (this.constArchivedJobData.length != this.archivedJobData.length) {
      this.constArchivedJobData = newData;

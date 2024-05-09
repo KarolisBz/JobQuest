@@ -10,7 +10,7 @@ export class SortingAlgorithmsService {
   // much faster the bubble sort
   // programmed after watching video https://www.youtube.com/watch?v=Hoixgm4-P4M&t=246s , 
   // this quicksort has been modified to only work with likeablness as there is no comparators in typescript
-  quickSort(objectArray: any): any[] {
+  quickSort(objectArray: any): any {
     // CANNOT SORT A ARRAY OF SIZE 1
     if (objectArray.length <= 1) {
       return objectArray;

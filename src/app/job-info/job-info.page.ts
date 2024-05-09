@@ -50,13 +50,13 @@ export class JobInfoPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // passing pages Id
     this.jobInfo = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
 
   // adds job obj to favourites data
-  favouriteJob() {
+  favouriteJob(): void {
     if (this.hasFavourite) {
       // unfavourite
       this.dataHandlerService.removeFavoriteData(this.jobObj);
@@ -69,7 +69,7 @@ export class JobInfoPage implements OnInit {
   }
 
   // adds job obj to archive-job data
-  archiveJob() {
+  archiveJob(): void {
     if (this.hasArchived) {
       // unfavourite
       this.dataHandlerService.removeArchivedData(this.jobObj);
@@ -104,48 +104,48 @@ export class JobInfoPage implements OnInit {
   };
 
   // code runs when page is accessed, stopping people from re-applying
-  ionViewWillEnter() {
-    let jobData:any = this.dataHandlerService.getData();
-    
-    // unlocking page from last object
-    this.applyBtnLock(false);
-    this.toggleFavBtn(false);
-    this.toggleArchiveBtn(false);
+  async ionViewWillEnter(): Promise<void> {
+    await this.dataHandlerService.getDataAsync().then((jobData: any) => {
+      // unlocking page from last object
+      this.applyBtnLock(false);
+      this.toggleFavBtn(false);
+      this.toggleArchiveBtn(false);
 
-    // setting back btn location
-    this.backUrl = this.jobHandler.backUrl;
+      // setting back btn location
+      this.backUrl = this.jobHandler.backUrl;
 
-    // using for loop so we can break out early and save some preformance
-    // finding out if job already applied to
-    for (let i: number = 0; i < jobData['pendingJobs'].length; i++) {
-      let job = jobData['pendingJobs'][i];
-      if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
-        this.applyBtnLock(true);
-        break;
+      // using for loop so we can break out early and save some preformance
+      // finding out if job already applied to
+      for (let i: number = 0; i < jobData['pendingJobs'].length; i++) {
+        let job = jobData['pendingJobs'][i];
+        if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
+          this.applyBtnLock(true);
+          break;
+        }
       }
-    }
 
-    // if has favourite
-    for (let i: number = 0; i < jobData['favoriteJobs'].length; i++) {
-      let job = jobData['favoriteJobs'][i];
-      if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
-        this.toggleFavBtn(true);
-        break;
+      // if has favourite
+      for (let i: number = 0; i < jobData['favoriteJobs'].length; i++) {
+        let job = jobData['favoriteJobs'][i];
+        if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
+          this.toggleFavBtn(true);
+          break;
+        }
       }
-    }
 
-     // if has archived
-     for (let i: number = 0; i < jobData['archivedJobs'].length; i++) {
-      let job = jobData['archivedJobs'][i];
-      if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
-        this.toggleArchiveBtn(true);
-        break;
+      // if has archived
+      for (let i: number = 0; i < jobData['archivedJobs'].length; i++) {
+        let job = jobData['archivedJobs'][i];
+        if (job != undefined && job['jobId'] == this.jobObj['jobId']) {
+          this.toggleArchiveBtn(true);
+          break;
+        }
       }
-    }
+    })
   }
 
   // adds job to pending requests
-  applyToJob(alert: any) {
+  applyToJob(alert: any): void {
     if (alert.detail.role == 'apply') {
       let alreadyApplied: boolean = this.dataHandlerService.addPendingData(this.jobObj);
       this.applyBtnLock(true);
@@ -159,7 +159,7 @@ export class JobInfoPage implements OnInit {
   }
 
   // locks the apply button when already applied
-  applyBtnLock(state: boolean) {
+  applyBtnLock(state: boolean): void {
     this.hasApplied = state;
     if (state) {
       this.applyBtnText = "Applied";
@@ -169,8 +169,7 @@ export class JobInfoPage implements OnInit {
   }
 
   // changes fav button state
-  toggleFavBtn(isToggled: boolean)
-  {
+  toggleFavBtn(isToggled: boolean): void {
     this.hasFavourite = isToggled;
     if (isToggled) {
       this.favIcon = "heart";
@@ -180,8 +179,7 @@ export class JobInfoPage implements OnInit {
   }
 
   // changes archived button state
-  toggleArchiveBtn(isToggled: boolean)
-  {
+  toggleArchiveBtn(isToggled: boolean): void {
     this.hasArchived = isToggled;
     if (isToggled) {
       this.archiveIcon = "archive";

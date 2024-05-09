@@ -46,7 +46,7 @@ export class AccountPage implements OnInit {
   // sets up account content if logged in
   async setupAccountContent(): Promise<void> {
     await this.dataHandler.getDataAsync().then((wrappedData: any) => {
-      this.currentAccount = wrappedData['currentAccount'];
+      this.currentAccount = wrappedData;
     })
 
     if (this.currentAccount['created']) { // sneaky way of checking if logged in without looping through keys
@@ -79,8 +79,7 @@ export class AccountPage implements OnInit {
       alert("incorrect password or email!");
     } else {
       // fetching full account details
-      this.currentAccount = this.dataHandler.getData()['currentAccount'];
-      this.loggedIn = true
+      this.setupAccountContent();
     }
   }
 
@@ -122,6 +121,9 @@ export class AccountPage implements OnInit {
       dateofBirth: this.dateOfBirth,
       phoneNo: this.phoneNo,
       created: true,
+      pendingJobs: [],
+      favoriteJobs: [],
+      archivedJobs: [],
     }
 
     let duplicateEmail:boolean = this.dataHandler.addAccountData(accountObj);

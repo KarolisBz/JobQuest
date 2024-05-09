@@ -29,10 +29,10 @@ export class JobPostsPage implements OnInit {
     addIcons({returnUpBack});
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // fetching ID
     this.jobPosts = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    console.log("reloaded")
+
     // on page initilization, subscribe to api data
     this.jobService.GetJobData().subscribe(
       (data) => {
@@ -59,19 +59,19 @@ export class JobPostsPage implements OnInit {
     );
   }
 
-  toJobInfo(jobObj: any) {
+  toJobInfo(jobObj: any): void {
     // shared version of function so edits only have to be made on 1 function
     this.jobService.toJobInfo(jobObj, this.router.url);
   }
 
   // clears the 2 way databinding data
-  clearInput() {
+  clearInput(): void {
     this.searchBarEntery = "";
     this.searchJob();
   }
 
   // gets similer words to search input and changes result number on badge
-  public searchJob()
+  public searchJob(): void
   {
     // fetching similer jobs
     this.jobData = this.jobService.getSimilerJobs(this.searchBarEntery, this.jobData, this.constJobData);
