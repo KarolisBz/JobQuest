@@ -12,15 +12,9 @@
     <ion-searchbar show-cancel-button="focus" showClearButton="never" clearIcon="" [(ngModel)]="searchBarEntery"
       [debounce]="500" (ionCancel)="clearInput()" (ionInput)="searchJob()" cancelButtonIcon="return-up-back"></ion-searchbar>
   </ion-toolbar>
-
 </ion-header>
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">we are</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
+<ion-content [fullscreen]="true">
   <div id="container">
     <ion-card *ngFor="let job of archivedJobData">
       <!--individual card code-->

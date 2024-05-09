@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonBadge, IonChip, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline, menu  } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline, menu, heartOutline  } from 'ionicons/icons';
 import { BadgeHandlerService } from './Services/badge-handler.service';
 import { DataHandlerService } from './Services/data-handler.service';
 
@@ -26,7 +26,7 @@ export class AppComponent implements OnDestroy {
 
   constructor(private badgeHandlerService:BadgeHandlerService, private router:Router, private dataHandler:DataHandlerService) {
     // adding ion-icons
-    addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
+    addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartSharp, heartOutline, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, personCircleOutline, personSharp, personOutline  });
 
     // runs first, setup for BadgeHandlerService referance
     this.badgeHandlerService.appComponent = this;
