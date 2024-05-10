@@ -62,17 +62,17 @@ export class DataHandlerService {
     if (tempStorage != null) {
       this.dataWrapper = tempStorage;
 
+      // checking if to logout / login user from last session
+      if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
+        this.dataWrapper['currentAccount'] = [];
+      }
+
       // if data exists load badges
       if (this.dataWrapper['currentAccount']['created']) {
         // setting badge data
         this.badgeHandler.setPendingNum(this.dataWrapper['currentAccount']['pendingJobs'].length)
         this.badgeHandler.setArchivedNum(this.dataWrapper['currentAccount']['archivedJobs'].length)
         this.badgeHandler.setFavNum(this.dataWrapper['currentAccount']['favoriteJobs'].length)
-      }
-
-      // checking if to logout / login user from last session
-      if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
-        this.dataWrapper['currentAccount'] = [];
       }
     }
 
