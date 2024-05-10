@@ -243,7 +243,7 @@ export class DataHandlerService {
     // using for loop so we can break out early and save some preformance
     for (let i: number = 0; i < this.dataWrapper['accountData'].length; i++) {
       let acc = this.dataWrapper['accountData'][i];
-      if (acc['email'] == accountData['email']) {
+      if (acc['email'].toLowerCase() == accountData['email'].toLowerCase()) {
         alreadyExists = true;
         break;
       }
