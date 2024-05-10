@@ -37,7 +37,7 @@ export class DataHandlerService {
   
   // saves all data
   async saveData() {
-    await this.storage.set('wrappedData0.5', this.dataWrapper)
+    await this.storage.set('wrappedData0.7', this.dataWrapper)
     .then(
       () =>
         {
@@ -55,7 +55,7 @@ export class DataHandlerService {
 
   // loads all the data
   async loadData() {
-    let tempStorage = await this.storage.get('wrappedData0.5');
+    let tempStorage = await this.storage.get('wrappedData0.7');
     console.log(tempStorage);
 
     // if first time loading database, don't overwrite default values
@@ -74,10 +74,10 @@ export class DataHandlerService {
       if (!this.dataWrapper['currentAccount']['stayLoggedIn']) {
         this.dataWrapper['currentAccount'] = [];
       }
-
-      // messages root account data
-      this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
     }
+
+    // messages root account data
+    this.badgeHandler.accountPortal(this.dataWrapper['currentAccount']);
 
     this.dataLoaded = true;
   }
